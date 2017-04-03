@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "playPause.h"
 #include "Turbo.h"
+#include "Settings.h"
+#include "GlobalVariables.h"
 #include <SFML\Graphics.hpp>
 #include <iostream>
 #include <string>
@@ -9,6 +11,8 @@
 #include <algorithm>
 
 using namespace std;
+using namespace GV;
+
 void setText(sf::Text &text, string t, sf::RectangleShape &shape, sf::Font &font, int x, int y, float size);
 void setShape(sf::RectangleShape &shape, sf::RenderWindow &window,
 	sf::Vector2f &vec, sf::Color &c, sf::Color &oc, int x, int y, int size, float outline);
@@ -45,7 +49,9 @@ int main() {
 
 	turbo t;
 	icon.create(32, 32, t.turboBuddy);
+	
 	playPause pp;
+	Settings settings;
 
 	window.setIcon(32, 32, icon.getPixelsPtr());
 
@@ -54,10 +60,10 @@ int main() {
 	string settwo = "Set Pos 2";
 	string vlcstr = "START VLC";
 
-	pp.SetupStuff();
+	settings.SetupStuff();
 
 	///Tries to load the font
-	if (!font.loadFromFile(pp.font)) {
+	if (!font.loadFromFile(GV::font)) {
 		int msg = MessageBox(NULL, L"Font could not be loaded", L"FONT WAS NOT FOUND", MB_OKCANCEL);
 		if (msg == 2) {
 			return 0;
@@ -96,7 +102,7 @@ int main() {
 	setText(text[4], "ON", play[4], font, -20, -15, 0.6f);   //START VLC TEXT
 	setText(text[5], "OFF", play[5], font, 0, 40, 0.6f);   //START VLC TEXT
 
-	if (pp.hideWindow) {
+	if (hideWindow) {
 		play[5].setPosition(play[4].getPosition().x + 12, play[4].getPosition().y);
 		ON = false;
 	}
@@ -187,14 +193,14 @@ int main() {
 				&& mouse.isButtonPressed(sf::Mouse::Left) && !spritedoonce && !canClick) {
 				if (ON) {
 					play[5].setPosition(play[4].getPosition().x + 12, play[4].getPosition().y);
-					pp.hideWindow = true;
-					cout << pp.hideWindow << endl;
+					hideWindow = true;
+					cout << hideWindow << endl;
 					ON = false;
 				}
 				else if (!ON) {
 					play[5].setPosition(play[4].getPosition().x - 12, play[4].getPosition().y);
-					pp.hideWindow = false;
-					cout << pp.hideWindow << endl;
+					hideWindow = false;
+					cout << hideWindow << endl;
 					ON = true;
 				}
 				spritedoonce = true;
