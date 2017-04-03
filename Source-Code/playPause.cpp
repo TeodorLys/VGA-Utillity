@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "playPause.h"
+#include "Settings.h"
+#include "GlobalVariables.h"
 #include <SFML\Graphics.hpp>
 #include <SFML\Window.hpp>
 #include <iostream>
@@ -13,6 +15,7 @@
 #include <boost\filesystem.hpp>
 
 using namespace std;
+using namespace GV;
 
 HWND vlcone = NULL;
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
@@ -21,18 +24,6 @@ playPause::playPause(){
 
 
 playPause::~playPause() {
-
-	settings.open("Settings.txt", fstream::out);
-	settings << firstPos.x << " " << firstPos.y
-		<< " " << secondPos.x << " " << secondPos.y << endl;;
-	
-	if (hideWindow) {
-		settings << "true" << endl;
-	}
-	else {
-		settings << "false" << endl;
-	}
-
 	if (canopen) {
 		CloseHandle(pi.hProcess);
 		CloseHandle(pi.hThread);
@@ -41,58 +32,6 @@ playPause::~playPause() {
 	}
 }
 
-void playPause::SetupStuff() {
-	string b;
-	settings.open("Settings.txt", fstream::in);
-	if (settings.is_open()) {
-		while (settings >> firstPos.x >> firstPos.y >> secondPos.x >> secondPos.y >> b);
-		settings.close();
-	}
-
-	if (b == "true") {
-		hideWindow = true;
-	}
-	else if(b == ""){
-		hideWindow = false;
-	}
-
-	string buff;
-
-	if (boost::filesystem::exists("Path.txt")) {
-		path.open("Path.txt", fstream::in);
-		getline(path, buff);
-		getline(path, font);
-		cout << buff << endl;
-		cout << font << endl;
-		if (font != "") {
-			if (font.find(".ttf") == string::npos) {
-				font += ".ttf";
-			}
-		tryagain:
-			if (boost::filesystem::exists(font)) {
-				
-			}
-			else {
-				path.close();
-				msg = MessageBoxW(NULL, L"Font path was not found\nplease check the path and try again", L"BAD FONT PATH", MB_RETRYCANCEL);
-				if (msg == 4)
-					goto tryagain;
-			}
-		}
-		else {
-			path.close();
-			path.open("Path.txt", fstream::out);
-			path << buff << endl << "C:/windows/fonts/arial.ttf";
-		}
-	}
-	else {
-		path.close();
-		path.open("Path.txt", fstream::out);
-		path << "c:/program files (x86)/videolan/vlc/vlc.exe" << endl << "c:/windows/fonts/arial.ttf";
-		font = "c:/windows/fonts/arial.ttf";
-		path.close();
-	}
-}
 
 void playPause::startVLC() {
 
@@ -105,12 +44,13 @@ void playPause::startVLC() {
 	ZeroMemory(&pi2, sizeof(pi2));
 
 	again:
-	path.open("Path.txt", fstream::in);
 
-	getline(path, h);
-	getline(path, font);
 	//Gets the path of VLC
 	if (boost::filesystem::exists("path.txt")) {
+		path.open("Path.txt", fstream::in);
+
+		getline(path, h);
+		getline(path, font);
 
 		if (h.find(".exe") == string::npos) {
 			h += "/vlc.exe";
