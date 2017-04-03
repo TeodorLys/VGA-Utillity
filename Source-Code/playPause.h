@@ -8,9 +8,6 @@
 class playPause
 {
 private:
-
-	HWND vlctwo = NULL;
-
 	///First VLC player information 
 	STARTUPINFO si;
 	PROCESS_INFORMATION pi;
@@ -21,21 +18,18 @@ private:
 
 	///Enables the CreateProcess to fire if the path was found
 	bool canopen = false;
-	LPCWSTR vlc;
 
-	std::string h;
-	std::wstring j;
+	LPCWSTR vlc;   //The path of VLC player
+	std::string VLCstr;   //Initial String
+	std::wstring j;   //Converstion from string to wstring, that then can be converted to LPCWSTR
 
-	INPUT key = { 0 };
-	POINT prePos;
-	DWORD pid;
-	int pidw;
-	int pi2dw;
-	const short sleepTime = 200;
+	INPUT key = { 0 };   //The keyboard/Mouse "SendInput"
+	POINT prePos;   //Temporary mouse position save for when clicking play/pause
+
 public:
 
-	playPause();
-	~playPause();
+	playPause();   //Constructor
+	~playPause();   //Destructor
 	void setCursorVar(std::string b);
 	void Play(sf::RenderWindow &window);
 	void leftclick();
