@@ -1,4 +1,4 @@
-## VGA Utillity.cpp
+## VLC.cpp
 
 Contains the main function, and creates window, sets shapes/buttons, sets text, handles the input and draws the buttons and text.
 
