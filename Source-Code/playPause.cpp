@@ -56,6 +56,42 @@ void playPause::SetupStuff() {
 		hideWindow = false;
 	}
 
+	string buff;
+
+	if (boost::filesystem::exists("Path.txt")) {
+		path.open("Path.txt", fstream::in);
+		getline(path, buff);
+		getline(path, font);
+		cout << buff << endl;
+		cout << font << endl;
+		if (font != "") {
+			if (font.find(".ttf") == string::npos) {
+				font += ".ttf";
+			}
+		tryagain:
+			if (boost::filesystem::exists(font)) {
+				
+			}
+			else {
+				path.close();
+				msg = MessageBoxW(NULL, L"Font path was not found\nplease check the path and try again", L"BAD FONT PATH", MB_RETRYCANCEL);
+				if (msg == 4)
+					goto tryagain;
+			}
+		}
+		else {
+			path.close();
+			path.open("Path.txt", fstream::out);
+			path << buff << endl << "C:/windows/fonts/arial.ttf";
+		}
+	}
+	else {
+		path.close();
+		path.open("Path.txt", fstream::out);
+		path << "c:/program files (x86)/videolan/vlc/vlc.exe" << endl << "c:/windows/fonts/arial.ttf";
+		font = "c:/windows/fonts/arial.ttf";
+		path.close();
+	}
 }
 
 void playPause::startVLC() {
@@ -72,7 +108,7 @@ void playPause::startVLC() {
 	path.open("Path.txt", fstream::in);
 
 	getline(path, h);
-
+	getline(path, font);
 	//Gets the path of VLC
 	if (boost::filesystem::exists("path.txt")) {
 
@@ -86,7 +122,7 @@ void playPause::startVLC() {
 		}
 		else {
 			path.close();
-			int msg = MessageBoxW(NULL, L"VLC player path does not exist.\nopen The path.txt and see if anything is wrong", L"PATH DOES NOT EXIST", MB_RETRYCANCEL);
+			msg = MessageBoxW(NULL, L"VLC player path does not exist.\nopen The path.txt and see if anything is wrong", L"PATH DOES NOT EXIST", MB_RETRYCANCEL);
 			if (msg == 4)
 				goto again;
 		}
@@ -95,7 +131,7 @@ void playPause::startVLC() {
 		path.close();
 		path.open("Path.txt", fstream::out);
 		path.close();
-		int msg = MessageBoxW(NULL, L"Path.txt file does not exists\nit will not though just write the\nVLC path in there", L"FILE DOES NOT EXIST", MB_RETRYCANCEL);
+		msg = MessageBoxW(NULL, L"Path.txt file does not exists\nit will not though just write the\nVLC path in there", L"FILE DOES NOT EXIST", MB_RETRYCANCEL);
 		cout << "could not open file" << endl;
 		canopen = false;
 		if(msg == 4)
