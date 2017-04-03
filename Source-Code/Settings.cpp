@@ -37,7 +37,7 @@ Settings::~Settings(){
 	settings.close();
 }
 
-
+///Initial Settings
 void Settings::SetupStuff() {
 	string buff;
 	settings.open("Settings.txt", fstream::in);
@@ -91,7 +91,7 @@ void Settings::SetupStuff() {
 		path.close();
 	}//If path does not exists END
 
-	///Just debug... if I forgot to close the files somewhere
+	///Just debug... if I forgot to close the files somewhere 
 	if (settings.is_open()) {
 		settings.close();
 	}
@@ -100,9 +100,9 @@ void Settings::SetupStuff() {
 		path.close();
 	}
 
-}
+}//SetupsStuff END
 
-///Not "WHAT THE FUCK", its: what to find
+///Gets the setting and finds if it is true or false
 bool Settings::findBool(string &b) {
 	if (b.find("true") != string::npos) {
 		return true;
@@ -110,6 +110,7 @@ bool Settings::findBool(string &b) {
 	else if (b.find("false") != string::npos) {
 		return false;
 	}
+	//Default to false
 	else {
 		return false;
 	}
