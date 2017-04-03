@@ -8,7 +8,7 @@ So I created this SUPER janky program that let you pause both player at the same
 
 /*the code is abit messy, I only started working on it, like, a day ago... if you have any ideas on making the program better, hit me up!*/
 
-The program can be downloaded here: http://bit.ly/2oyEnIB
+The program can be downloaded here: http://bit.ly/2oBzKO4
 
 ## How it works
 
