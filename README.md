@@ -1,18 +1,22 @@
 # VGA-Utillity
 This repository contains the program for FarFromSublte's "Awesome Piece Theater"
 
-When watching that show with two VLC player's open(the movie and the show) it is annoying to Play/pause
+When watching that show with two VLC player's open(the movie and the show) it is annoying to play/pause
 because then you have to resync the movie.
 
 So I created this SUPER janky program that let you pause both player at the same time.
 
 /*the code is abit messy, I only started working on it, like, a day ago... if you have any ideas on making the program better, hit me up!*/
 
+The program can be downloaded here: http://bit.ly/2oyEnIB
+
 ## How it works
 
 This program uses the Windows API, with it's SetCursorPos() function.
 So it sets the mouse cursor to the first player, left clicks and the hits "SPACE"(to play/pause),
 and the does the same for the second player.
+
+The ON/OFF switch is if you only have one screen and the "VGA Utillity" program is over the VLC player, ON: will hide the program while it plays/pause VLC and OFF: will just keep it as is.
 
 I used SFML for the UI, because I couldnt be bothered to use windows convoluted functions and variables.
 
