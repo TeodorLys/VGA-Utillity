@@ -16,7 +16,7 @@ void setShape(sf::RectangleShape &shape, sf::RenderWindow &window,
 #ifdef _DEBUG
 #pragma comment(linker, "/SUBSYSTEM:console /ENTRY:mainCRTStartup")
 #else 
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#pragma comment(linker, "/SUBSYSTEM:console /ENTRY:mainCRTStartup")
 #endif // _DEBUG
 
 
@@ -29,14 +29,14 @@ bool ON = true;
 
 int main() {
 
-	sf::RenderWindow window(sf::VideoMode(400, 400), "Turbo", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(400, 400), "VGA Utillity", sf::Style::Close);
 
 	window.setActive(false);
 	window.setFramerateLimit(60);
 	window.setVerticalSyncEnabled(false);
 
 	const int playIndex = 6;
-	const int textIndex = 6;
+	const int textIndex = 7;
 	sf::RectangleShape play[playIndex];
 	sf::Text text[textIndex];
 	sf::Font font;
@@ -53,10 +53,15 @@ int main() {
 	string setone = "Set Pos 1";
 	string settwo = "Set Pos 2";
 	string vlcstr = "START VLC";
+
+	pp.SetupStuff();
+
 	///Tries to load the font
-	if (!font.loadFromFile("c:/windows/fonts/arial.ttf")) {
+	if (!font.loadFromFile(pp.font)) {
 		int msg = MessageBox(NULL, L"Font could not be loaded", L"FONT WAS NOT FOUND", MB_OKCANCEL);
-		cout << "could not load font" << endl;
+		if (msg == 2) {
+			return 0;
+		}
 	}
 
 	///Shapes/Buttons
@@ -84,15 +89,12 @@ int main() {
 			 sf::Color(160, 160, 160), play[4].getPosition().x - 12, play[4].getPosition().y, 4, 0.2f);   
 
     ///TEXT
-	setText(text[0], strplay, play[0], font, 122, 30, 1.5f);  //PLAY PAUSE TEXT
-	setText(text[1], setone, play[1], font, 70, 20, 1);   //SET POS 1 TEXT
-	setText(text[2], settwo, play[2], font, 70, 20, 1);   //SET POS 2 TEXT
-	setText(text[3], vlcstr, play[3], font, 90, 22, 1);   //START VLC TEXT 90 22
-	setText(text[4], "ON", play[4], font, -10, -15, 0.6f);   //START VLC TEXT
-	setText(text[5], "OFF", play[5], font, 25, 40, 0.6f);   //START VLC TEXT
-
-	pp.SetupStuff();
-
+	setText(text[0], strplay, play[0], font, 0, 30, 1.5f);  //PLAY PAUSE TEXT
+	setText(text[1], setone, play[1], font, 0, 22, 1);   //SET POS 1 TEXT
+	setText(text[2], settwo, play[2], font, 0, 22, 1);   //SET POS 2 TEXT
+	setText(text[3], vlcstr, play[3], font, 0, 22, 1);   //START VLC TEXT 90 22
+	setText(text[4], "ON", play[4], font, -20, -15, 0.6f);   //START VLC TEXT
+	setText(text[5], "OFF", play[5], font, 0, 40, 0.6f);   //START VLC TEXT
 
 	if (pp.hideWindow) {
 		play[5].setPosition(play[4].getPosition().x + 12, play[4].getPosition().y);
@@ -252,4 +254,5 @@ void setText(sf::Text &text, string t, sf::RectangleShape &shape, sf::Font &font
 	text.setFont(font);
 	text.setStyle(sf::Text::Bold);
 	text.setFillColor(sf::Color(0, 0, 0));
+	text.setOrigin(text.getLocalBounds().left + text.getLocalBounds().width / 2, 0);
 }
