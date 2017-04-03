@@ -19,9 +19,9 @@ I used SFML for the UI, because I couldnt be bothered to use windows convoluted 
 ## Setting it up
 
 So basically what you have to do to set it ut is: Click the "Set Pos 1" and the button goes dark, then the hold the mouse cursor
-over the first player until the button goes back to normal(Then the first pos is set), and do the same with "Set Pos 2" with the second player.
+over the first player until the button goes back to normal, Then the first mouse position is set, and do the same with "Set Pos 2" with the second player.
 
 ## WHY
 
-I have tried to use VLC's own API, but...(IT SUCKS!!). Trying to gets it handle(EVEN IF YOU CREATE IT!!) and try "SetFocus()" does not work, you cant get any result... Trying to "SetForegroundWindow()" DOES NOT WORK!... anyways, rant over.
+I have tried to use VLC's own API, but...(IT SUCKS!!). Trying to gets it's handle (EVEN IF YOU CREATE IT!!) you cant get any result... Trying to "SetForegroundWindow()" DOES NOT WORK!... anyways, rant over.
 So this is the only "reliable" way I could find.
