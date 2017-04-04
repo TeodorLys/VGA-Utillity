@@ -22,10 +22,10 @@ InitialSetup::~InitialSetup()
 }
 
 void InitialSetup::movieWindow() {
-	if (!movie.openFromFile("G:\\AWESOME! Piece Theatre Presents- Scream-HD.mp4")) {
+	if (!movie.openFromFile(...)) {
 		cout << "could not open movie" << endl;
 	}
-	if (!movie2.openFromFile("G:\\All On The drive for stuff\\Backup på den gamla externa disken\\Downloaded Movies\\Jönssonligan COMPLETE BOXSET\\Jönssonligan Dyker Upp Igen\\Jönssonligan Dyker Upp Igen.mkv")) {
+	if (!movie2.openFromFile(...)) {
 		cout << "could not open movie" << endl;
 	}
 
