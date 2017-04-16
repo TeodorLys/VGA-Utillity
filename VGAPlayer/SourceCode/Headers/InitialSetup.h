@@ -4,10 +4,11 @@
 class InitialSetup
 {
 private:
-
+	void ImportfromFile();
+	void setText(sf::Text &t, std::string str, sf::Vector2f pos);
+	sf::Image image;
 public:
 	InitialSetup();
-	~InitialSetup();
 	std::string ffs;
 	std::string mov;
 	void movieWindow();
