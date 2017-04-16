@@ -20,5 +20,9 @@ public:
 	void deHightlight(sf::Text &t);
 	void deHightlight(sf::RectangleShape &shape, sf::Color &c);
 	bool Click();
+	void reSync(sf::Time offset);
+	bool movie2Hover();
+	int ffstv();
+	int lerp();
 };
 
