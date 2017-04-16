@@ -4,6 +4,8 @@
 #include <SFML\Graphics.hpp>
 #include <sfeMovie\Movie.hpp>
 #include <iostream>
+#include <cmath>
+#include <ctime>
 
 using namespace std;
 using namespace GV;
@@ -55,7 +57,7 @@ void Actions::deHightlight(sf::RectangleShape &shape, sf::Color &c) {
 
 //Hover Overloaded Function
 bool Actions::Hover(sf::Text &t) {
-	if (t.getGlobalBounds().contains(sf::Vector2f(mouse.getPosition(window)))) {
+	if (t.getGlobalBounds().contains(sf::Vector2f(sfm.mouse.getPosition(sfm.window)))) {
 		return true;
 	}
 	else {
@@ -64,7 +66,7 @@ bool Actions::Hover(sf::Text &t) {
 }
 
 bool Actions::Hover(sf::RectangleShape &shape) {
-	if (shape.getGlobalBounds().contains(sf::Vector2f(mouse.getPosition(window)))) {
+	if (shape.getGlobalBounds().contains(sf::Vector2f(sfm.mouse.getPosition(sfm.window)))) {
 		return true;
 	}
 	else {
@@ -73,7 +75,7 @@ bool Actions::Hover(sf::RectangleShape &shape) {
 }
 
 bool Actions::Hover(sf::Sprite &s) {
-	if (s.getGlobalBounds().contains(sf::Vector2f(mouse.getPosition(window)))) {
+	if (s.getGlobalBounds().contains(sf::Vector2f(sfm.mouse.getPosition(sfm.window)))) {
 		return true;
 	}
 	else {
@@ -83,10 +85,55 @@ bool Actions::Hover(sf::Sprite &s) {
 
 //Click function
 bool Actions::Click() {
-	if (mouse.isButtonPressed(sf::Mouse::Left)) {
+	if (sfm.mouse.isButtonPressed(sf::Mouse::Left)) {
 		return true;
 	}
 	else {
 		return false;
 	}
+}
+
+void Actions::reSync(sf::Time offset) {
+	sf::Time newOff;
+	if (mod.oneMovie->switchON)
+	newOff = sfemov.movie2.getPlayingOffset();
+
+	cout << newOff.asSeconds() << endl;
+	cout << sfemov.movie.getPlayingOffset().asMicroseconds() + offset.asSeconds() << endl;
+
+	if (newOff.asSeconds() != sfemov.movie.getPlayingOffset().asSeconds() + offset.asSeconds())
+		cout << "offset" << endl;
+}
+
+bool Actions::movie2Hover() {
+	if (sfm.mouse.getPosition(sfm.window).x > sfemov.movie2.getPosition().x && 
+		sfm.mouse.getPosition(sfm.window).x < sfemov.movie2.getPosition().x + (sfemov.movie2.getSize().x / 2) &&
+		sfm.mouse.getPosition(sfm.window).y > sfemov.movie2.getPosition().y && 
+		sfm.mouse.getPosition(sfm.window).y < sfemov.movie2.getPosition().y + (sfemov.movie2.getSize().y / 2)) {
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+int Actions::ffstv() {
+
+	srand(time(NULL));
+
+	int r = rand() % 4;
+
+	if (r != 0) {
+		return r;
+	}
+	else {
+		ffstv();
+	}
+
+}
+
+int Actions::lerp() {
+
+
+
 }
