@@ -16,128 +16,150 @@ using namespace GV;
 InitialSetup::InitialSetup(){
 	ffs = "NONE";
 	mov = "NONE";
-}
-
-
-InitialSetup::~InitialSetup()
-{
-}
+}//Constructor
 
 void InitialSetup::movieWindow() {
 
 	turbo t;
 	sf::Image icon;
-	sf::Image image;
-	
 
-	if (!image.loadFromFile("screenshot.png")) {
-		exit(-1);
-	}
-	else {
-		if (!ffsBG.loadFromImage(image)) {
-			exit(-1);
-		}
-		else {
-			ffssp[0].setTexture(&ffsBG);
-		}
-	}
+	ImportfromFile();
 
-	window.create(sf::VideoMode(width, height), "VGAPlayer", sf::Style::Close | sf::Style::Resize);
-	window.setFramerateLimit(60);
-	window.setVerticalSyncEnabled(true);
+	sfm.window.create(sf::VideoMode(value.width, value.height), "VGAPlayer", sf::Style::Close | sf::Style::Resize);
+	sfm.window.setFramerateLimit(60);
+	sfm.window.setVerticalSyncEnabled(true);
 
-	ffssp[0].setPosition(0, 0);
-	ffssp[0].setScale(1, 1);
-	ffssp[0].setSize(sf::Vector2f(window.getSize().x, window.getSize().x * 9 / 16));
+	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 
-	ffssp[1].setPosition(window.getSize().x / 2, ffssp[0].getSize().y - 100);
-	ffssp[1].setScale(1, 1);
-	ffssp[1].setSize(sf::Vector2f(100, 50));
-	ffssp[1].setFillColor(sf::Color(200,200,200));
-	ffssp[1].setOutlineColor(sf::Color(150,150,150));
-	ffssp[1].setOutlineThickness(5.f);
-
+	value.w = static_cast<float>(desktopMode.width);
+	value.h = static_cast<float>(desktopMode.height);
 
 	icon.create(32, 32, t.turboBuddy);
 
-	window.setIcon(32, 32, icon.getPixelsPtr());
+	sfm.window.setIcon(32, 32, icon.getPixelsPtr());
 
+	//The menu background
+	sfm.theCrew.setSize(sf::Vector2f(image.getSize().x, image.getSize().y));
+	sfm.theCrew.setOrigin(sfm.theCrew.getSize().x / 2, sfm.theCrew.getSize().y / 2);
+	sfm.theCrew.setPosition(sfm.window.getSize().x / 2, 300);
 
-	font.loadFromFile("VGAFont.ttf");
-	vol1.setString("0");
-	vol1.setCharacterSize(32);
-	vol1.setScale(1, 1);
-	vol1.setFillColor(sf::Color(255, 255, 255));
-	vol1.setFont(font);
-	vol1.setStyle(sf::Text::Bold);
-	vol1.setPosition(0, 0);
+	//"Fullscreen" movie Volume
+	setText(sfm.vol1, to_string(value.mov2Vol), sf::Vector2f(0, 0));
 
-	vol2.setString("0");
-	vol2.setCharacterSize(32);
-	vol2.setScale(1, 1);
-	vol2.setFillColor(sf::Color(255, 255, 255));
-	vol2.setFont(font);
-	vol2.setStyle(sf::Text::Bold);
-	//vol2.setOrigin(vol2.getScale().x, 0);
-	vol2.setPosition(window.getSize().x - 60, 0);
-
-	OMov.setFont(font);
-	OMov.setCharacterSize(32);
-	OMov.setString("Open Movie file");
-	OMov.setStyle(sf::Text::Bold);
-	OMov.setFillColor(sf::Color(255,100,0));
-	OMov.setPosition(window.getSize().x / 2 + 200, 100);
+	//Smaller movie Volume
+	setText(sfm.vol2, to_string(value.mov2Vol), sf::Vector2f(sfm.window.getSize().x, 0));
 	
-	OVGA.setFont(font);
-	OVGA.setCharacterSize(32);
-	OVGA.setString("Open FFStv file");
-	OVGA.setStyle(sf::Text::Bold);
-	OVGA.setFillColor(sf::Color(255, 100, 0));
-	OVGA.setPosition(100, 200);
+	//"Fullscreen" movie timer
+	setText(sfm.tTimer, "0", sf::Vector2f(0, sfm.window.getSize().y - sfm.tTimer.getGlobalBounds().height));
 
-	tPlay.setString("Play");
-	tPlay.setFont(font);
-	tPlay.setCharacterSize(32);
-	tPlay.setFillColor(sf::Color(0, 0, 0));
-	tPlay.setPosition(ffssp[1].getPosition().x + 15, ffssp[1].getPosition().y + 2);
+	//Smaller movie timer
+	setText(sfm.smalltTimer, "0", sf::Vector2f(sfm.window.getSize().x, sfm.window.getSize().y));
+
+	//Load Base Background
+	if(!sfm.base.loadFromFile("base.png")){
+		value.msg = MessageBox(NULL, L"COULD NOT LOAD IMAGE", L"INVALID FILE PATH", MB_RETRYCANCEL);
+	}
+	
+	sfm.b.setTexture(&sfm.base);
+	sfm.b.setSize(sf::Vector2f(sfm.window.getSize().x, sfm.window.getSize().y));
+
+}//MovieWindow Function END
 
 
+ ///////////////////////////////////////////////////////////////////////////////////////////
+ /// \Imports all images and textures
+ ///////////////////////////////////////////////////////////////////////////////////////////
+void InitialSetup::ImportfromFile() {
+	string background;
 
-}
+	if (obj.actions.ffstv() == 1) {
+		background = "FFSTV.png";
+	}
+	else if (obj.actions.ffstv() == 2) {
+		background = "FFSTVmario.png";
+	}
+	else if (obj.actions.ffstv() == 3) {
+		background = "FFSTVps.png";
+	}
+	else {
+		background = "FFSTV.png";
+	}
 
+	//For some reason I have to load an Image... and then to a Texture
+	if (!image.loadFromFile(background)) {
+		value.msg = MessageBox(NULL, L"COULD NOT LOAD IMAGE\nSOMETHING HAS BEEN DELETED", L"IMAGE NOT LOADED", MB_OKCANCEL);
+		if (value.msg == IDOK || value.msg == IDCANCEL)
+			exit(-1);
+	}
+	else {
+		if (!sfm.ffsBG.loadFromImage(image)) {
+			value.msg = MessageBox(NULL, L"COULD NOT LOAD IMAGE\nSOMETHING HAS BEEN DELETED", L"IMAGE NOT LOADED", MB_OKCANCEL);
+			if (value.msg == IDOK || value.msg == IDCANCEL)
+				exit(-1);
+			exit(-1);
+		}
+		else {
+			sfm.theCrew.setTexture(&sfm.ffsBG);
+		}
+	}
+
+	if (!sfm.font.loadFromFile("VGAFont.ttf")) {
+		if (!sfm.font.loadFromFile("c:\\windows\\fonts\\arial.ttf")) {
+			value.msg = MessageBox(NULL, L"DEFAULT FONT COULD NOT BE LOADED", L"FONT NOT LOADED", MB_RETRYCANCEL);
+			if (value.msg == IDCANCEL) {
+				exit(-1);
+			}
+			else if (value.msg == IDRETRY) {
+				if (!sfm.font.loadFromFile("c:\\windows\\fonts\\arial.ttf")) {
+					value.msg = MessageBox(NULL, L"DEFAULT FONT COULD NOT BE LOADED", L"FONT NOT LOADED", MB_OKCANCEL);
+					if (value.msg == IDCANCEL && value.msg == IDOK)
+						exit(-1);
+				}//Default font retry load END
+			}//Default Font load fail click retry END
+		}//Default font load END
+	}//VGAFont load END
+}//Import from file Function END
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+/// \Creates or gets information from Settings file
+///////////////////////////////////////////////////////////////////////////////////////////
 void InitialSetup::files(){
 	fstream paths;
 	string buff;
+	
+	str.current = boost::filesystem::current_path();
+
 	if (boost::filesystem::exists("Settings.txt")) {
 		paths.open("Settings.txt", fstream::in);
 		if (paths.is_open()) {
 			getline(paths, buff);
-			if (buff.find_first_of("ATP: ") != string::npos) {
-				buff.erase(0, buff.find("ATP: "));
-				APTpath = buff;
+			if (buff.find_first_of("volume1: ") != string::npos) {
+				buff.erase(0, buff.find_last_of("volume1: ") + 1);
+				value.mov1Vol = atoi(buff.c_str());
 			}
 
 			getline(paths, buff);
 
-			if (buff.find_first_of("Movie: ") != string::npos) {
-				buff.erase(0, buff.find("Movie: "));
-				moviePath = buff;
+			if (buff.find_first_of("volume2: ") != string::npos) {
+				buff.erase(0, buff.find_last_of("volume2: ") + 1);
+				value.mov2Vol = atoi(buff.c_str());
 			}
 		}
 		paths.close();
-
-		cout << moviePath << endl;
-		cout << APTpath << endl;
-
 	}
 	else {
 		paths.open("Settings.txt", fstream::out);
-		paths << "APT: " << endl;
-		paths << "Movie: " << endl;
+		paths << "volume1: 0" << endl;
+		paths << "volume2: 0" << endl;
 		paths.close();
 	}
-}
+}//Files Function END
 
+
+ ///////////////////////////////////////////////////////////////////////////////////////////
+ /// \Creates an open file prompt
+ ///////////////////////////////////////////////////////////////////////////////////////////
 void InitialSetup::openFile(int n) {
 	OPENFILENAMEA file;
 	string s;
@@ -146,7 +168,7 @@ void InitialSetup::openFile(int n) {
 	HWND hwnd = NULL;
 	ZeroMemory(&file, sizeof(file));
 	file.lStructSize = sizeof(file);
-	file.hwndOwner = window.getSystemHandle();
+	file.hwndOwner = sfm.window.getSystemHandle();
 	file.lpstrFile = c;
 	file.lpstrFile[0] = '\0';
 	file.nMaxFile = sizeof(c);
@@ -172,32 +194,51 @@ void InitialSetup::openFile(int n) {
 			mov = s;
 		}
 	}
+}//Open file Function END
 
-}
+
 
 void InitialSetup::UI() {
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+/// \Loads the movies into memory
+///////////////////////////////////////////////////////////////////////////////////////////
 void InitialSetup::LoadMovie(int n) {
 	openFile(n);
-	wstring t;
 
-	cout << ffs << "   " << mov << endl;
+	if (ffs != "NONE" || mov != "NONE") {
+		wstring t;
 
-	if (n == 1) {
-		if (!movie.openFromFile(ffs)) {
-			string h = "Could not open\n" + ffs;
-			t = wstring(h.begin(), h.end());
-			LPCWSTR message = t.c_str();
-			int msg = MessageBox(NULL, message, L"PATH WAS NOT FOUND", MB_RETRYCANCEL);
+		if (n == 1) {
+			if (!sfemov.movie.openFromFile(ffs)) {
+				string h = "Could not open\n" + ffs;
+				t = wstring(h.begin(), h.end());
+				LPCWSTR message = t.c_str();
+				value.msg = MessageBox(NULL, message, L"PATH WAS NOT FOUND", MB_RETRYCANCEL);
+			}
+		}
+		else {
+			if (!sfemov.movie2.openFromFile(mov)) {
+				string h = "Could not open\n" + mov;
+				t = wstring(h.begin(), h.end());
+				LPCWSTR message = t.c_str();
+				value.msg = MessageBox(NULL, message, L"PATH WAS NOT FOUND", MB_RETRYCANCEL);
+			}
 		}
 	}
-	else {
-		if (!GV::movie2.openFromFile(mov)) {
-			string h = "Could not open\n" + mov;
-			t = wstring(h.begin(), h.end());
-			LPCWSTR message = t.c_str();
-			int msg = MessageBox(NULL, message, L"PATH WAS NOT FOUND", MB_RETRYCANCEL);
-		}
-	}
-}
+}//LoadMovie Function END
+
+
+ ///////////////////////////////////////////////////////////////////////////////////////////
+ /// \Sets all settings for text objects
+ ///////////////////////////////////////////////////////////////////////////////////////////
+void InitialSetup::setText(sf::Text &t, string str, sf::Vector2f pos) {
+	t.setString(str);
+	t.setCharacterSize(32);
+	t.setScale(1, 1);
+	t.setFillColor(sf::Color(255, 255, 255));
+	t.setFont(sfm.font);
+	t.setStyle(sf::Text::Regular);
+	t.setPosition(pos);
+}//SetText Function END
