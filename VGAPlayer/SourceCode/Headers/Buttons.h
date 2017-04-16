@@ -11,7 +11,6 @@ private:
 	float WidthAdd;
 public:
 	Buttons();
-	~Buttons();
 	float newScaleX;
 	float newScaleY;
 	void setText(std::string str);
@@ -19,11 +18,12 @@ public:
 	void setScale(sf::Vector2f vec);
 	void setTextColor(sf::Color c);
 	void setButtonColor(sf::Color c, sf::Color outline, float line);
-	void setPosition(sf::Vector2f pos);
+	void setPosition(sf::Vector2f pos, float extra);
 	void setSize(float h, float w);
 	bool Hover(sf::Color c, float size);
-	void ScreenScaleing(sf::Vector2f pos, float sizeX, float sizeY);
+	void ScreenScaleing(sf::Vector2f pos, float sizeX, float sizeY, float extra);
 	sf::Vector2f getPosition();
+	sf::Vector2f getSize();
 	float getNew();
 };
 
