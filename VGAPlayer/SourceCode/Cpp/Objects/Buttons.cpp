@@ -1,6 +1,5 @@
 #include "Buttons.h"
 #include "GlobalVariables.h"
-#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 

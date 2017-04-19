@@ -1,6 +1,5 @@
 #include "Switch.h"
 #include "GlobalVariables.h"
-#include <SFML\Graphics.hpp>
 #include <iostream>
 
 using namespace std;
@@ -54,7 +53,7 @@ void Switch::setPosition(sf::Vector2f pos) {
 
 bool Switch::clickSwitch() {
 	if (base.getGlobalBounds().contains(sf::Vector2f(sfm.mouse.getPosition(sfm.window))) &&
-		obj.actions.Click()) {
+		obj.actions.Click() && bools.focus) {
 
 		if (!switchON) {
 			base.setFillColor(sf::Color(100, 220, 100));
@@ -74,6 +73,7 @@ bool Switch::clickSwitch() {
 	else {
 		return false;
 	}
+	return false;
 }
 
 void Switch::draw() {
