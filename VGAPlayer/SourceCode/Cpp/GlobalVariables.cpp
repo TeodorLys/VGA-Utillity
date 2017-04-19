@@ -4,9 +4,6 @@
 #include "InitialSetup.h"
 #include "Buttons.h"
 #include "Struct.h"
-#include <SFML\Graphics.hpp>
-#include <sfeMovie\Movie.hpp>
-#include <string>
 
 using namespace std;
 

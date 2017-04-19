@@ -1,7 +1,6 @@
 #include "InitialSetup.h"
 #include "Actions.h"
 #include "GlobalVariables.h"
-#include <SFML\Graphics.hpp>
 #include <sfeMovie\Movie.hpp>
 #include <iostream>
 #include <cmath>
@@ -12,12 +11,14 @@ using namespace GV;
 
 Actions::Actions() {
 	doonce = false;
+	srand((int)time(NULL));
+	c = sf::Color(10, 10, 10);
 }
 
 //Highlight Overloaded Function
 void Actions::highlight(sf::Text &t, string color, float thickness) {
-	if (!doonce) {
-		c = t.getColor();
+	if (!doonce && t.getFillColor().r > NULL && t.getFillColor().r <= 255) {
+		c = t.getFillColor();
 		doonce = true;
 	}
 
@@ -32,7 +33,7 @@ void Actions::highlight(sf::Text &t, string color, float thickness) {
 }
 
 void Actions::highlight(sf::RectangleShape &shape, string color) {
-	if (!doonce) {
+	if (!doonce && shape.getFillColor().r > NULL && shape.getFillColor().r <= 255) {
 		c = shape.getFillColor();
 		doonce = true;
 	}
@@ -119,7 +120,7 @@ bool Actions::movie2Hover() {
 
 int Actions::ffstv() {
 
-	srand(time(NULL));
+	
 
 	int r = rand() % 4;
 
@@ -129,7 +130,7 @@ int Actions::ffstv() {
 	else {
 		ffstv();
 	}
-
+	return 1;
 }
 
 int Actions::lerp() {

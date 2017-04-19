@@ -1,6 +1,5 @@
 #include "InitialSetup.h"
 #include "GlobalVariables.h"
-#include <SFML\Graphics.hpp>
 #include <sfeMovie\Movie.hpp>
 #include <iostream>
 #include <Windows.h>
@@ -25,7 +24,7 @@ void InitialSetup::movieWindow() {
 
 	ImportfromFile();
 
-	sfm.window.create(sf::VideoMode(value.width, value.height), "VGAPlayer", sf::Style::Close | sf::Style::Resize);
+	sfm.window.create(sf::VideoMode((int)value.width, (int)value.height), "VGAPlayer", sf::Style::Close | sf::Style::Resize);
 	sfm.window.setFramerateLimit(60);
 	sfm.window.setVerticalSyncEnabled(true);
 
@@ -39,21 +38,21 @@ void InitialSetup::movieWindow() {
 	sfm.window.setIcon(32, 32, icon.getPixelsPtr());
 
 	//The menu background
-	sfm.theCrew.setSize(sf::Vector2f(image.getSize().x, image.getSize().y));
-	sfm.theCrew.setOrigin(sfm.theCrew.getSize().x / 2, sfm.theCrew.getSize().y / 2);
-	sfm.theCrew.setPosition(sfm.window.getSize().x / 2, 300);
+	sfm.theCrew.setSize(sf::Vector2f((float)image.getSize().x, (float)image.getSize().y));
+	sfm.theCrew.setOrigin((float)sfm.theCrew.getSize().x / 2, (float)sfm.theCrew.getSize().y / 2);
+	sfm.theCrew.setPosition((float)sfm.window.getSize().x / 2, 300);
 
 	//"Fullscreen" movie Volume
-	setText(sfm.vol1, to_string(value.mov2Vol), sf::Vector2f(0, 0));
+	setText(sfm.vol1, to_string((int)value.mov2Vol), sf::Vector2f(0, 0));
 
 	//Smaller movie Volume
-	setText(sfm.vol2, to_string(value.mov2Vol), sf::Vector2f(sfm.window.getSize().x, 0));
+	setText(sfm.vol2, to_string((int)value.mov2Vol), sf::Vector2f((float)sfm.window.getSize().x, 0));
 	
 	//"Fullscreen" movie timer
 	setText(sfm.tTimer, "0", sf::Vector2f(0, sfm.window.getSize().y - sfm.tTimer.getGlobalBounds().height));
 
 	//Smaller movie timer
-	setText(sfm.smalltTimer, "0", sf::Vector2f(sfm.window.getSize().x, sfm.window.getSize().y));
+	setText(sfm.smalltTimer, "0", sf::Vector2f((float)sfm.window.getSize().x, (float)sfm.window.getSize().y));
 
 	//Load Base Background
 	if(!sfm.base.loadFromFile("base.png")){
@@ -61,7 +60,9 @@ void InitialSetup::movieWindow() {
 	}
 	
 	sfm.b.setTexture(&sfm.base);
-	sfm.b.setSize(sf::Vector2f(sfm.window.getSize().x, sfm.window.getSize().y));
+	sfm.b.setSize(sf::Vector2f((float)sfm.window.getSize().x, (float)sfm.window.getSize().y));
+
+	obj.me.contextMenuSetup();
 
 }//MovieWindow Function END
 
@@ -103,6 +104,13 @@ void InitialSetup::ImportfromFile() {
 		}
 	}
 
+	if (!sfm.sysFont.loadFromFile("C:\\Windows\\Fonts\\segoeui.ttf")) {
+		value.msg = MessageBox(NULL, L"COULD NOT LOAD SYSTEM FONT", L"PATH NOT FOUND", MB_OKCANCEL);
+		if (value.msg == IDCANCEL || value.msg == IDOK) {
+			exit(-1);
+		}
+	}
+
 	if (!sfm.font.loadFromFile("VGAFont.ttf")) {
 		if (!sfm.font.loadFromFile("c:\\windows\\fonts\\arial.ttf")) {
 			value.msg = MessageBox(NULL, L"DEFAULT FONT COULD NOT BE LOADED", L"FONT NOT LOADED", MB_RETRYCANCEL);
@@ -136,14 +144,14 @@ void InitialSetup::files(){
 			getline(paths, buff);
 			if (buff.find_first_of("volume1: ") != string::npos) {
 				buff.erase(0, buff.find_last_of("volume1: ") + 1);
-				value.mov1Vol = atoi(buff.c_str());
+				value.mov1Vol = (float)atoi(buff.c_str());
 			}
 
 			getline(paths, buff);
 
 			if (buff.find_first_of("volume2: ") != string::npos) {
 				buff.erase(0, buff.find_last_of("volume2: ") + 1);
-				value.mov2Vol = atoi(buff.c_str());
+				value.mov2Vol = (float)atoi(buff.c_str());
 			}
 		}
 		paths.close();
