@@ -1,15 +1,17 @@
 #pragma once
-#include <SFML/Graphics.hpp>
+#include <SFML\Graphics\Text.hpp>
+#include <SFML\Graphics\RectangleShape.hpp>
+#include <SFML\Graphics\Transform.hpp>
 #include <string>
 class Buttons
 {
 private:
 	sf::Text title;
-	sf::RectangleShape b;
 	void rectangle();
 	float HeightAdd;
 	float WidthAdd;
 public:
+	sf::RectangleShape b;
 	Buttons();
 	float newScaleX;
 	float newScaleY;
