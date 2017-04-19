@@ -12,7 +12,7 @@ void Resized::playResize() {
 
 		//Corrects for the resized window size
 	if (mod.oneMovie->switchON)
-		sfemov.movie2.setPosition(sfm.window.getSize().x / 2, sfemov.movie.getPosition().y);
+		sfemov.movie2.setPosition((float)sfm.window.getSize().x / 2, (float)sfemov.movie.getPosition().y);
 
 		//Fits the "Fullscreen" movie for the resized window size
 		sfemov.movie.fit(0.f, 0.f, (float)sfm.window.getSize().x, (float)sfm.window.getSize().y);

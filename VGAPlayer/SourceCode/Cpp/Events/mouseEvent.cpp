@@ -16,10 +16,10 @@ void mouseEvent::mouseWheel(sf::Event event) {
 				value.mov2Vol += value.incBy;
 
 				//Increment volume with 1
-				sfemov.movie2.setVolume((float)value.mov2Vol);
+				sfemov.movie2.setVolume(value.mov2Vol);
 
 				//Changes the on screen text
-				sfm.vol2.setString(to_string(value.mov2Vol));
+				sfm.vol2.setString(to_string((int)value.mov2Vol));
 
 			}
 			//If mouse wheel is moved in the other direction
@@ -27,9 +27,9 @@ void mouseEvent::mouseWheel(sf::Event event) {
 
 				value.mov2Vol -= value.incBy;
 				//Decrement volume with -1
-				sfemov.movie2.setVolume((float)value.mov2Vol);
+				sfemov.movie2.setVolume(value.mov2Vol);
 
-				sfm.vol2.setString(to_string(value.mov2Vol));
+				sfm.vol2.setString(to_string((int)value.mov2Vol));
 			}
 		}
 		//If mouse is over the "Fullscreen" movie
@@ -39,17 +39,17 @@ void mouseEvent::mouseWheel(sf::Event event) {
 
 				value.mov1Vol += value.incBy;
 
-				sfemov.movie.setVolume((float)value.mov1Vol);
+				sfemov.movie.setVolume(value.mov1Vol);
 
-				sfm.vol1.setString(to_string(value.mov1Vol));
+				sfm.vol1.setString(to_string((int)value.mov1Vol));
 			}
 			else if (event.mouseWheel.delta < 0 && value.mov1Vol != 0 && bools.movieIsPlaying) {
 
 				value.mov1Vol -= value.incBy;
 
-				sfemov.movie.setVolume((float)value.mov1Vol);
+				sfemov.movie.setVolume(value.mov1Vol);
 
-				sfm.vol1.setString(to_string(value.mov1Vol));
+				sfm.vol1.setString(to_string((int)value.mov1Vol));
 			}//Mouse wheel delta less END 
 		}//If the mouse isnt over the smaller movie rectangle END
 	}
@@ -58,17 +58,17 @@ void mouseEvent::mouseWheel(sf::Event event) {
 
 			value.mov1Vol += value.incBy;
 
-			sfemov.movie.setVolume((float)value.mov1Vol);
+			sfemov.movie.setVolume(value.mov1Vol);
 
-			sfm.vol1.setString(to_string(value.mov1Vol));
+			sfm.vol1.setString(to_string((int)value.mov1Vol));
 		}
 		else if (event.mouseWheel.delta < 0 && value.mov1Vol != 0 && bools.movieIsPlaying) {
 
 			value.mov1Vol -= value.incBy;
 
-			sfemov.movie.setVolume((float)value.mov1Vol);
+			sfemov.movie.setVolume(value.mov1Vol);
 
-			sfm.vol1.setString(to_string(value.mov1Vol));
+			sfm.vol1.setString(to_string((int)value.mov1Vol));
 		}//Mouse wheel delta less END 
 	}
 }//mouseWheel Function END
@@ -91,17 +91,17 @@ void mouseEvent::menuButtons() {
 					startMovies();
 
 					float buff = sfemov.movie.getDuration().asSeconds() / 60;
-					value.hour = buff / 60;
-					value.minute = buff - (value.hour * 60);
-					value.second = sfemov.movie.getDuration().asSeconds() - (((value.hour * 60) * 60) + (value.minute * 60));
+					value.hour = (int)buff / 60;
+					value.minute = (int)buff - (value.hour * 60);
+					value.second = (int)sfemov.movie.getDuration().asSeconds() - (((value.hour * 60) * 60) + (value.minute * 60));
 					
 					if (mod.oneMovie->switchON) {
 						buff = 0;
 
 						buff = sfemov.movie2.getDuration().asSeconds() / 60;
-						value.smallhour = buff / 60;
-						value.smallminute = buff - (value.smallhour * 60);
-						value.smallsecond = sfemov.movie2.getDuration().asSeconds() - (((value.smallhour * 60) * 60) + (value.smallminute * 60));
+						value.smallhour = (int)buff / 60;
+						value.smallminute = (int)buff - (value.smallhour * 60);
+						value.smallsecond = (int)sfemov.movie2.getDuration().asSeconds() - (((value.smallhour * 60) * 60) + (value.smallminute * 60));
 
 					
 					}
@@ -122,12 +122,69 @@ void mouseEvent::menuButtons() {
 	}
 }//menuButtons Function END
 
+void mouseEvent::contextMenuSetup() {
+	mod.basic->setup();
+	mod.basic->addObject(*mod.about, "About");
+	mod.basic->objectsSetup();
+
+	mod.other->setup();
+	mod.other->addObject(*mod.about, "About Again");
+	mod.other->objectsSetup();
+}
+
+void mouseEvent::showContextMenu(ContextMenu &cM) {
+	if (sfm.mouse.isButtonPressed(sf::Mouse::Right) && bools.focus) {
+		cM.setPosition();
+		cM.contextMenuShown = true;
+	}
+	else if(!cM.isOver()){
+		cM.contextMenuShown = false;
+	}
+}
+
+void mouseEvent::showContextMenuSelector(ContextMenu &cM) {
+	if (cM.showSelector()) {
+		if (obj.actions.Hover(cM.objects[0].textRect) && obj.actions.Click() && !bools.mouseClick) {
+			value.msg = MessageBox(NULL, L"VGA Player ALPHA v0.1\nmade by Teodor", L"About VGA Player", MB_OK);
+			bools.mouseClick = true;
+		}
+		else {
+			return;
+		}
+	}
+}
+
+void mouseEvent::contextMenuHandler() {
+	if (obj.actions.Hover(mod.ffstv->b)) {
+		obj.me.showContextMenu(*mod.other);
+	}
+	else {
+		obj.me.showContextMenu(*mod.basic);
+	}
+	if (!bools.focus) {
+		mod.basic->contextMenuShown = false;
+		mod.other->contextMenuShown = false;
+		mod.basic->showSelector();
+		mod.other->showSelector();
+	}
+
+	if (mod.basic->isOver() == false) {
+		mod.basic->contextMenuShown = false;
+		mod.basic->showSelector();
+	}
+
+	if (mod.other->isOver() == false) {
+		mod.other->contextMenuShown = false;
+		mod.other->showSelector();
+	}
+}
+
  ////////////////////////////////////////////////////////////////////////////////////////////////
  /// \Private help function to menuButtons													  ///																			 
  ////////////////////////////////////////////////////////////////////////////////////////////////
 void mouseEvent::loadMovieButtons() {
 	///Checks if the mouse is over the OPEN FFSTV VIDEO button
-	if (mod.ffstv->Hover(sf::Color(175, 175, 175), 2)) {
+	if (mod.ffstv->Hover(sf::Color(175, 175, 175), 2) && !mod.other->isOver()) {
 		///Checks if the left mouse button is pressed
 		if (obj.actions.Click() && !bools.doonce && !bools.mouseClick && bools.focus) {
 
@@ -224,6 +281,5 @@ void mouseEvent::showHideUI() {
 		sfm.vol2.setFillColor(sf::Color(sfm.vol2.getFillColor().r, sfm.vol2.getFillColor().g, sfm.vol2.getFillColor().b, 0));
 		sfm.smalltTimer.setFillColor(sf::Color(sfm.smalltTimer.getFillColor().r, sfm.smalltTimer.getFillColor().g, sfm.smalltTimer.getFillColor().b, 0));
 		sfm.tTimer.setFillColor(sf::Color(sfm.tTimer.getFillColor().r, sfm.tTimer.getFillColor().g, sfm.tTimer.getFillColor().b, 0));
-
 	}
 }//ShowHideUI Function END

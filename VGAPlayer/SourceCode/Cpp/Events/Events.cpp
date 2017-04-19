@@ -3,7 +3,6 @@
 #include "Resized.h"
 #include "keyPress.h"
 #include <sfeMovie\Movie.hpp>
-#include <SFML\Graphics.hpp>
 #include <iostream>
 #include <fstream>
 #include <boost\filesystem.hpp>
@@ -36,6 +35,7 @@ void Events::checkKeypress(sf::Event event, sf::Time time) {
 	/// of only that movie                                                 ///
 	//////////////////////////////////////////////////////////////////////////
 	else if (event.type == sf::Event::MouseWheelMoved) {
+		if(bools.movieIsPlaying)
 		obj.me.mouseWheel(event);
 	}//Mouse wheel moved END 
 }//Poll event END
@@ -43,16 +43,16 @@ void Events::checkKeypress(sf::Event event, sf::Time time) {
 
 ///Sets the window in BORDERLESS fullscreen mode
 void Events::enterFullscreen(sf::RenderWindow &window) {
-	value.width = window.getSize().x;
-	value.height = window.getSize().y;
-	window.create(sf::VideoMode(value.w, value.h), "VGAPlayer", sf::Style::Fullscreen);
+	value.width = (float)window.getSize().x;
+	value.height = (float)window.getSize().y;
+	window.create(sf::VideoMode((unsigned int)value.w, (unsigned int)value.h), "VGAPlayer", sf::Style::Fullscreen);
 	bools.isFullscreen = true;
 	bools.changeStyle = true;
 }
 
 ///Exits the BORDERLESS fullscreen 
 void Events::exitFullscreen(sf::RenderWindow &window) {
-	window.create(sf::VideoMode(value.width, value.height), "VGAPlayer", sf::Style::Close | sf::Style::Resize);
+	window.create(sf::VideoMode((unsigned int)value.width, (unsigned int)value.height), "VGAPlayer", sf::Style::Close | sf::Style::Resize);
 	bools.isFullscreen = false;
 	bools.changeStyle = true;
 }
