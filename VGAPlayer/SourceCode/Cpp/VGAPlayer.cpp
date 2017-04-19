@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "GlobalVariables.h"
 #include "Buttons.h"
-#include <SFML\Graphics.hpp>
 #include <sfeMovie\Movie.hpp>
 #include <iostream>
 #include <Windows.h>
@@ -11,7 +10,7 @@
 #include <mutex>
 #include <condition_variable>
 
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+#pragma comment(linker, "/SUBSYSTEM:console /ENTRY:mainCRTStartup")
 
 using namespace std;
 using namespace GV;
@@ -79,6 +78,16 @@ int main() {
 		//Starts the timer for to Hide the UI if the mouse is still for 2 seconds
 		tStart = chrono::high_resolution_clock::now();
 
+		if (mod.basic->contextMenuShown) {
+			mod.other->contextMenuShown = false;
+			obj.me.showContextMenuSelector(*mod.basic);
+		}
+		else if (mod.other->contextMenuShown) {
+			mod.basic->contextMenuShown = false;
+			obj.me.showContextMenuSelector(*mod.other);
+		}
+
+
 		if (!mod.oneMovie->switchON) {
 			sfm.theCrew.setFillColor(sf::Color(0, 0, 0, 150));
 		}
@@ -139,22 +148,6 @@ int main() {
 				}
 			}
 		}
-		//If the mouse is only clicked and not on any button
-		if (obj.actions.Click()) {
-			bools.mouseClick = true;
-		}
-
-		///Checks if the user doesnt click the left mouse button
-		if (!obj.actions.Click()) {
-			///If the movie has been moved
-			if (bools.moveMovie) {
-				bools.moveMovie = false;
-			}
-			//Resets the Doonce for buttons
-			bools.doonce = false;
-			bools.mouseClick = false;
-			bools.switchOnce = false;
-		}
 
 		sf::Event event;
 		while (sfm.window.pollEvent(event)) {
@@ -181,10 +174,40 @@ int main() {
 				bools.focus = true;
 			}
 
+			if (event.type == sf::Event::MouseButtonPressed) {
+				obj.me.contextMenuHandler();
+			}
+
 			///Checks if the user clicks any buttons
 			obj.ev.checkKeypress(event, time);
 
 		}//Poll event END
+	
+		 //If the mouse is only clicked and not on any button
+		if (obj.actions.Click()) {
+			bools.mouseClick = true;
+		}
+
+		///Checks if the user doesnt click the left mouse button
+		if (!obj.actions.Click()) {
+			///If the movie has been moved
+			if (bools.moveMovie) {
+				bools.moveMovie = false;
+			}
+			//Resets the Doonce for buttons
+			bools.doonce = false;
+			bools.mouseClick = false;
+			bools.switchOnce = false;
+		}
+
+
+
+		if (!bools.focus) {
+			mod.basic->contextMenuShown = false;
+			mod.other->contextMenuShown = false;
+			mod.basic->showSelector();
+			mod.other->showSelector();
+		}
 
 		obj.md.Timer();
 
@@ -192,7 +215,6 @@ int main() {
 			obj.md.smallTimer();
 
 		obj.me.checkUI(tStart, tEnd);
-
 
 		///Menu
 		if (!bools.movieIsPlaying) {
@@ -204,7 +226,7 @@ int main() {
 
 		}
 	}
-}
+}//Main Function END
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 /// \Renders the menu Objects
@@ -220,6 +242,13 @@ void localMenuRender() {
 	mod.film->draw();   //Draws the OPEN MOVIE FILE button
 
 	mod.oneMovie->draw();
+
+	if (mod.basic->contextMenuShown) {
+		mod.basic->draw();
+	}
+	else if (mod.other->contextMenuShown) {
+		mod.other->draw();
+	}
 
 	sfm.window.display();   //Display what was just drawn
 }
