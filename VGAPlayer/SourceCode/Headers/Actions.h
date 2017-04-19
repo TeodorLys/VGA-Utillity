@@ -1,6 +1,10 @@
 #pragma once
 
-#include <SFML\Graphics.hpp>
+#include <SFML\Graphics\Text.hpp>
+#include <SFML\Graphics\RectangleShape.hpp>
+#include <SFML\Graphics\Sprite.hpp>
+#include <SFML\Graphics\Color.hpp>
+#include <SFML\System\Time.hpp>
 #include <string>
 
 class Actions {

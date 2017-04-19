@@ -1,5 +1,8 @@
 #pragma once
-
+#include <SFML\Graphics\Font.hpp>
+#include <SFML\Graphics\Text.hpp>
+#include <SFML\Graphics\RenderWindow.hpp>
+#include <SFML\Graphics\Color.hpp>
 #include "InitialSetup.h"
 #include "Actions.h"
 #include "fanArt.h"
@@ -10,7 +13,8 @@
 #include "Events.h"
 #include "movieDuration.h"
 #include "Switch.h"
-#include <SFML\Graphics.hpp>
+#include "ContextMenu.h"
+#include "ContextMenuObjects.h"
 #include <sfeMovie\Movie.hpp>
 #include <Windows.h>
 #include <boost\filesystem.hpp>
@@ -29,6 +33,7 @@ struct objects {
 	mouseEvent me;
 	Events ev;
 	movieDuration md;
+	//ContextMenu cm;
 };
 
 struct strings {
@@ -40,8 +45,8 @@ struct strings {
 };
 
 struct values {
-	int mov1Vol = 0;   //fullscreen movie volume variable
-	int mov2Vol = 0;   //Smaller movie volume variable
+	float mov1Vol = 0;   //fullscreen movie volume variable
+	float mov2Vol = 0;   //Smaller movie volume variable
 	int msg;
 	int currentHour;
 	int currentMinute;
@@ -91,6 +96,7 @@ struct booleans {
 	bool mouseIsStill = false;
 	bool mouseOnce = false;
 	bool switchOnce = false;
+	bool contextMenu = false;
 };
 
 struct modules {
@@ -103,6 +109,10 @@ struct modules {
 
 	Switch *oneMovie = new Switch;
 
+	textButton *about = new textButton;
+
+	ContextMenu *basic = new ContextMenu;
+	ContextMenu *other = new ContextMenu;
 };
 
 struct sfml {
@@ -110,6 +120,7 @@ struct sfml {
 	sf::Text vol1;
 	sf::Text vol2;
 	sf::Font font;
+	sf::Font sysFont;
 	sf::Text OMov;
 	sf::Text OVGA;
 	sf::Text tPlay;

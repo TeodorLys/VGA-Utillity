@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
-#include <SFML\Graphics.hpp>
+#include <SFML\Graphics\Image.hpp>
+#include <SFML\Graphics\Text.hpp>
+#include <SFML\Graphics\Transform.hpp>
 class InitialSetup
 {
 private:
