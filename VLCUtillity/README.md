@@ -16,7 +16,7 @@ This program uses the Windows API, with it's SetCursorPos() function.
 So it sets the mouse cursor to the first player, left clicks and the hits "SPACE"(to play/pause),
 and the does the same for the second player.
 
-The ON/OFF switch is if you only have one screen and the "VGA Utillity" program is over the VLC player, ON: will hide the program while it plays/pause VLC and OFF: will just keep it as is.
+The ON/OFF switch is if you only have one monitor and the "VGA Utillity" program is over the VLC player, ON: will hide the program while it plays/pause VLC and OFF: will just keep it as is.
 
 I used SFML for the UI, because I couldnt be bothered to use windows convoluted functions and variables.
 
