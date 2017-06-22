@@ -20,7 +20,7 @@ void movieDuration::Timer() {
 			value.currentSecond = 0;
 		}
 		else {
-			value.currentSecond = (int)sfemov.movie.getPlayingOffset().asSeconds() -
+			value.currentSecond = (int)sfemov.movie->getPlayingOffset().asSeconds() -
 				((value.currentMinute * 60) + ((value.currentHour * 60) * 60));
 		}
 
@@ -49,7 +49,7 @@ void movieDuration::smallTimer() {
 				value.smallcurrentSecond = 0;
 			}
 			else {
-				value.smallcurrentSecond = (int)sfemov.movie2.getPlayingOffset().asSeconds() - ((value.smallcurrentMinute * 60) + ((value.smallcurrentHour * 60) * 60));
+				value.smallcurrentSecond = (int)sfemov.movie2->getPlayingOffset().asSeconds() - ((value.smallcurrentMinute * 60) + ((value.smallcurrentHour * 60) * 60));
 			}
 
 			str.smallstrTime = to_string(value.smallcurrentHour) + ":" + to_string(value.smallcurrentMinute) + ":" + to_string(value.smallcurrentSecond) + "  /  " +

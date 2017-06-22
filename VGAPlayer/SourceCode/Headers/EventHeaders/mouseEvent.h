@@ -5,9 +5,10 @@
 
 class mouseEvent : public Events {
 private:
-	void emptyPath();
-	void loadMovieButtons();
-
+	inline void emptyPath();
+	inline void loadMovieButtons();
+	inline void ReplayMovies();
+	inline void ReturnToMenu();
 public:
 	void mouseWheel(sf::Event event);
 	void menuButtons();
@@ -15,7 +16,9 @@ public:
 	void showHideUI();
 	void showContextMenu(ContextMenu &cM);
 	void showContextMenuSelector(ContextMenu &cM);
+	void contextMenuDoEvents(ContextMenu &cM);
 	void contextMenuSetup();
 	void contextMenuHandler();
+	void endScreen();
 };
 

@@ -9,4 +9,5 @@ public:
 	sf::Text t;
 	sf::RectangleShape textRect;
 	void textObjects(float divBy, std::string str, sf::RectangleShape &base);
+	std::string getName();
 };

@@ -6,5 +6,6 @@ public:
 
 	void playResize();
 	void menuResize();
+	void playMenuResize();
 };
 

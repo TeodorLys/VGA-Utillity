@@ -1,4 +1,5 @@
 #include "Resized.h"
+#include <iostream>
 #include "GlobalVariables.h"
 
 using namespace std;
@@ -8,20 +9,24 @@ void Resized::playResize() {
 
 		//Fits the smaller movie the the resized window size
 	if (mod.oneMovie->switchON)
-		sfemov.movie2.fit(0, 0, (float)sfm.window.getSize().x, (float)sfm.window.getSize().y);
+		sfemov.movie2->fit(0, 0, (float)sfm.window.getSize().x, (float)sfm.window.getSize().y);
 
 		//Corrects for the resized window size
 	if (mod.oneMovie->switchON)
-		sfemov.movie2.setPosition((float)sfm.window.getSize().x / 2, (float)sfemov.movie.getPosition().y);
+		sfemov.movie2->setPosition((float)sfm.window.getSize().x / 2, (float)sfemov.movie->getPosition().y);
 
 		//Fits the "Fullscreen" movie for the resized window size
-		sfemov.movie.fit(0.f, 0.f, (float)sfm.window.getSize().x, (float)sfm.window.getSize().y);
+		sfemov.movie->fit(0.f, 0.f, (float)sfm.window.getSize().x, (float)sfm.window.getSize().y);
 
-		//Volume indicator for the resized window
-		sfm.vol2.setPosition(sfm.window.getSize().x - 60.f, 0);
+		playMenuResize();
+}
 
-		sfm.tTimer.setPosition(0, sfm.window.getSize().y - sfm.tTimer.getGlobalBounds().height);
-		sfm.smalltTimer.setPosition(sfm.window.getSize().x - sfm.smalltTimer.getGlobalBounds().width, sfm.window.getSize().y - sfm.smalltTimer.getGlobalBounds().height);
+void Resized::playMenuResize() {
+	//Volume indicator for the resized window
+	sfm.vol2.setPosition(sfm.window.getSize().x - 60.f, 0);
+
+	sfm.tTimer.setPosition(0, sfm.window.getSize().y - sfm.tTimer.getGlobalBounds().height);
+	sfm.smalltTimer.setPosition(sfm.window.getSize().x - sfm.smalltTimer.getGlobalBounds().width, sfm.window.getSize().y - sfm.smalltTimer.getGlobalBounds().height);
 }
 
 void Resized::menuResize() {

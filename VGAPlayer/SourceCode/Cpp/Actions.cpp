@@ -97,20 +97,21 @@ bool Actions::Click() {
 void Actions::reSync(sf::Time offset) {
 	sf::Time newOff;
 	if (mod.oneMovie->switchON)
-	newOff = sfemov.movie2.getPlayingOffset();
+	newOff = sfemov.movie2->getPlayingOffset();
 
 	cout << newOff.asSeconds() << endl;
-	cout << sfemov.movie.getPlayingOffset().asMicroseconds() + offset.asSeconds() << endl;
+	cout << sfemov.movie->getPlayingOffset().asMicroseconds() + offset.asSeconds() << endl;
 
-	if (newOff.asSeconds() != sfemov.movie.getPlayingOffset().asSeconds() + offset.asSeconds())
+	if (newOff.asSeconds() != sfemov.movie->getPlayingOffset().asSeconds() + offset.asSeconds())
 		cout << "offset" << endl;
 }
 
 bool Actions::movie2Hover() {
-	if (sfm.mouse.getPosition(sfm.window).x > sfemov.movie2.getPosition().x && 
-		sfm.mouse.getPosition(sfm.window).x < sfemov.movie2.getPosition().x + (sfemov.movie2.getSize().x / 2) &&
-		sfm.mouse.getPosition(sfm.window).y > sfemov.movie2.getPosition().y && 
-		sfm.mouse.getPosition(sfm.window).y < sfemov.movie2.getPosition().y + (sfemov.movie2.getSize().y / 2)) {
+	if (sfm.mouse.getPosition(sfm.window).x > sfemov.movie2->getPosition().x &&
+		sfm.mouse.getPosition(sfm.window).x < sfemov.movie2->getPosition().x + xLimit &&
+		sfm.mouse.getPosition(sfm.window).y > sfemov.movie2->getPosition().y &&
+		sfm.mouse.getPosition(sfm.window).y < sfemov.movie2->getPosition().y + yLimit) {
+
 		return true;
 	}
 	else {
@@ -119,9 +120,6 @@ bool Actions::movie2Hover() {
 }
 
 int Actions::ffstv() {
-
-	
-
 	int r = rand() % 4;
 
 	if (r != 0) {
@@ -137,4 +135,9 @@ int Actions::lerp() {
 
 
 
+}
+
+void Actions::SetLimits(float LX, float LY) {
+	xLimit = LX;
+	yLimit = LY;
 }

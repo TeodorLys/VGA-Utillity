@@ -15,4 +15,5 @@ namespace GV {
 	booleans bools;
 	modules mod;
 	sfml sfm;
+	SaveAbleVariables save;
 }

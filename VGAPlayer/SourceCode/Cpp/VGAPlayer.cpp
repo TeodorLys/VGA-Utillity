@@ -1,4 +1,4 @@
-
+//2017-05-1 19:26, Currently: 2384 lines of code
 #include "stdafx.h"
 #include "GlobalVariables.h"
 #include "Buttons.h"
@@ -15,20 +15,13 @@
 using namespace std;
 using namespace GV;
 
-//Function Prototyping 
+/*---(Function Prototype)---*/
 void rendering(sf::RenderWindow *window);  //separate Thread
 void threadStart();
 void threadPause();
-void setButtons(Buttons &b, float sX, float sY, string text, 
-	            sf::Color &c, sf::Color &out, float outsize, 
-	            sf::Color &tc, sf::Vector2f &p, float scaleX, 
-	            float scaleY, float extra);
-
 void localMenuRender();
 void localMovieRender();
-void setSwitches(Switch &s, float size, sf::Vector2f pos);
 
-//Booleans
 bool windowClosed = false;
 
 std::condition_variable cv;   //Thread lock
@@ -38,97 +31,89 @@ chrono::high_resolution_clock::time_point tStart;
 chrono::high_resolution_clock::time_point tEnd;
 
 int main() {
+	
+	GV::obj.initial.files();   //settings.txt
+	GV::obj.initial.movieWindow();   //Runs the initial movie parameters
 
-	obj.initial.files();
+	sf::Time time;   //used for setPlayingOffset variable
 
-	obj.initial.movieWindow();   //Runs the initial movie parameters
+	GV::obj.initial.menuButtonsSettings();   //Initializes all of the menu buttons
+	GV::obj.re.menuResize();
 
-	//obj.initial.UI();   //*NOT IN USE YET* 
-	sf::Time time;   //setPlayingOffset variable
-
-	//Sets the PLAY Button settings
-	setButtons(*mod.play, 20, 20, "Play", sf::Color(50, 50, 50),
-		sf::Color(100, 65, 0), 5.5f, sf::Color(100, 65, 0),
-		sf::Vector2f(sfm.window.getSize().x / 2.f, sfm.window.getSize().y - 100.f), 2, 2, 7);
-
-	//Sets the OPEN FFSTV VIDEO settings
-	setButtons(*mod.ffstv, 20, 20, "Open FFSTV Video", sf::Color(0, 0, 0),
-		sf::Color(255, 125, 0), 5.5f, sf::Color(255, 125, 0),
-		sf::Vector2f(200.f, sfm.window.getSize().y - 100.f), 1, 1, 5);
-
-	//Sets the OPEN MOVIE FILE settings
-	setButtons(*mod.film, 20, 20, "Open Movie File", sf::Color(0, 0, 0),
-		sf::Color(255, 125, 0), 5.5f, sf::Color(255, 125, 0),
-		sf::Vector2f(sfm.window.getSize().x - 200.f, sfm.window.getSize().y - 100.f), 1, 1, 5);
-
-	setSwitches(*mod.oneMovie, 5, sf::Vector2f(mod.play->getPosition().x, mod.play->getPosition().y - (mod.play->getSize().y)));
-
-	sfm.window.setActive(false);
-
-	//Sets up the thread
-	thread render(bind(rendering, &sfm.window));
+	sfm.window.setActive(false); //For the seperate Thread(render)
+	thread render(bind(rendering, &sfm.window));   //Sets up the thread
 
 	mod.oneMovie->setBase();
 
-	//Event handling
-	while (sfm.window.isOpen()) {
+	cout << sizeof(value) << endl;
 
-		obj.me.menuButtons();  //Checks if user clicks any buttons
+	/*---(Runtime stuff)---*/
+	while (sfm.window.isOpen()) {
+		if (bools.movieIsPlaying && obj.debugs.convValue) {
+			cout << obj.actions.movie2Hover() << " " << " | ";
+			cout << floor(sfemov.movie2->getSize().x / sfemov.movie2->getSize().y) << " | ";
+			cout << sfemov.movie2->getScale().x << " " << sfemov.movie2->getScale().y << " | ";
+			cout << obj.debugs.convValue << " | ";
+			cout << obj.actions.yLimit << " | ";
+			cout << sfm.window.getSize().x << " " << sfm.window.getSize().y << " | ";
+			cout << sfemov.movie->getSize().x << " " << sfemov.movie->getSize().y << endl;
+		}
+
+		GV::obj.me.menuButtons();  //Checks if user clicks any buttons	
+
+		if(bools.endOfMovie)
+			GV::obj.me.endScreen();
 
 		//Starts the timer for to Hide the UI if the mouse is still for 2 seconds
 		tStart = chrono::high_resolution_clock::now();
 
-		if (mod.basic->contextMenuShown) {
-			mod.other->contextMenuShown = false;
-			obj.me.showContextMenuSelector(*mod.basic);
+		//Cycle through all of the contextmenu
+		for (int a = 0; a < 2; a++) {
+			if (mod.allCM[a]->contextMenuShown) {
+				GV::obj.me.showContextMenuSelector(*mod.allCM[a]);
+			}
 		}
-		else if (mod.other->contextMenuShown) {
-			mod.basic->contextMenuShown = false;
-			obj.me.showContextMenuSelector(*mod.other);
-		}
-
-
+		
+		//When the switch is ON change the crew image black
 		if (!mod.oneMovie->switchON) {
 			sfm.theCrew.setFillColor(sf::Color(0, 0, 0, 150));
 		}
+		//Otherwise return to normal color
 		else {
 			sfm.theCrew.setFillColor(sf::Color(255,255,255, 255));
 		}
 
-		///To make sure that users is not trying to access a NULL object
-		if (bools.movieIsPlaying) {
-			if (mod.oneMovie->switchON) {
-				if (obj.actions.movie2Hover()) {
-					if (obj.actions.Click() && !bools.moveMovie && !bools.mouseClick) {
-						//Saves the initial mouse X position
-						value.initx = sfm.mouse.getPosition(sfm.window).x;
-						//Saves the initial mouse Y position
-						value.inity = sfm.mouse.getPosition(sfm.window).y;
-						//Saves the initial movie X position
-						value.mx = sfemov.movie2.getPosition().x;
-						//Saves the initial Y position
-						value.my = sfemov.movie2.getPosition().y;
+	   //To make sure that users is not trying to access a NULL objeect
+	   if (bools.movieIsPlaying) {
+		   //And if oneMovie Switch is on(to only play one movie)
+		   if (mod.oneMovie->switchON) {
+			   //And if mouse is over the second movie
+			   if (GV::obj.actions.movie2Hover()) {
+				   //And if Mouse is clicked, and the second movie isnt being moved and mouse button isnt clicked
+				   if (GV::obj.actions.Click() && !bools.moveMovie && !bools.mouseClick) {
+					   value.initx = sfm.mouse.getPosition(sfm.window).x;
+					   value.inity = sfm.mouse.getPosition(sfm.window).y;
+					   value.mx = sfemov.movie2->getPosition().x;
+					   value.my = sfemov.movie2->getPosition().y;
 
-						bools.moveMovie = true;
-					}
-				}
-				///Checking with the if statement above
-				if (bools.moveMovie) {
-					//Changes the movie position, with the previously saved parameters
-					//and with the current mouse position 
-					sfemov.movie2.setPosition(sf::Vector2f(sfm.mouse.getPosition(sfm.window).x + (value.mx - value.initx), sfm.mouse.getPosition(sfm.window).y + (value.my - value.inity)));
-					//Updates the movie so it continues playing while moving
-					sfemov.movie2.update();
-				}
-			}
+					   bools.moveMovie = true;
+				   }
+			   }
+			   //Checking with the if statement above
+			   if (bools.moveMovie) {
+				   //Changes the movie position, with the previously saved parameters
+				   //and with the current mouse position 
+				   sfemov.movie2->setPosition(sf::Vector2f(sfm.mouse.getPosition(sfm.window).x + (value.mx - value.initx),
+				   sfm.mouse.getPosition(sfm.window).y + (value.my - value.inity)));
+			   }
+		   }
 
-			///If the user Clicks the window border
+			//If the user Clicks the window border, Start Thread
 			if (sfm.mouse.getPosition(sfm.window).x >= 0 && sfm.mouse.getPosition(sfm.window).y <= 0) {
-				if (obj.actions.Click() && !bools.m_border1 && !bools.mouseClick) {
+				//And the mouse is clicked, and hasent been clicked before(without releaseing mouse button)
+				if (GV::obj.actions.Click() && !bools.m_border1 && !bools.mouseClick) {
 					//Changes the OpenGL to false, mostly for the thread
 					sfm.window.setActive(false);
-
-					//Starts the Thread
 					threadStart();
 
 					//Tells the if statement in the thread to Draw all the stuff
@@ -137,100 +122,126 @@ int main() {
 					bools.m_border2 = false; 
 				}
 			}
+			//If user doesnt click the border
 			else {
+				//And the border has been clicked before
 				if (!bools.m_border2) {
 					//Pauses the thread, so the CPU dont get angry at me
 					threadPause();
-					//Tells the if statement in the thread to stop
+
 					bools.border = false;
 					bools.m_border2 = true;
 					bools.m_border1 = false;  
 				}
 			}
 		}
+		else if (!bools.movieIsPlaying && bools.beforeStart) {
+			bools.beforeStart = false;
+		}
 
-		sf::Event event;
-		while (sfm.window.pollEvent(event)) {
-
-			///Basically a destructor
-			if (event.type == sf::Event::Closed) {
-				obj.ev.SaveSettings();
-
+		while (sfm.window.pollEvent(sfm.event)) {
+			switch (sfm.event.type) {
+			case sf::Event::Closed:
+				GV::obj.ev.SaveSettings();
 				windowClosed = true;   //Variable for the second thread
-				
+
 				Sleep(100);
 
-				render.detach();   //Detaches the thread so it can safely exit
-				
+				render.detach();   //Detaches the thread so it can safely exit		
 				sfm.window.close();   //Close the SFML window
-			}
+				break;
 
-			//Checks if the program has focus
-			//So you cant click buttons when the program is underneath other programs
-			else if (event.type == sf::Event::LostFocus) {
+			case sf::Event::LostFocus:
 				bools.focus = false;
-			}
-			else if (event.type == sf::Event::GainedFocus) {
+				break;
+
+			case sf::Event::GainedFocus:
 				bools.focus = true;
+				break;
+
+			default:
+				break;
 			}
 
-			if (event.type == sf::Event::MouseButtonPressed) {
-				obj.me.contextMenuHandler();
+			if (sfm.event.type == sf::Event::MouseButtonPressed) {
+				GV::obj.me.contextMenuHandler();
 			}
 
-			///Checks if the user clicks any buttons
-			obj.ev.checkKeypress(event, time);
+			if (obj.debugs.writing) {
+				obj.debugs.valueField();
+			}
 
+			//Checks if the user clicks any buttons
+			GV::obj.ev.checkKeypress(sfm.event, time);
 		}//Poll event END
 	
 		 //If the mouse is only clicked and not on any button
-		if (obj.actions.Click()) {
+		if (GV::obj.actions.Click()) {
 			bools.mouseClick = true;
 		}
 
-		///Checks if the user doesnt click the left mouse button
-		if (!obj.actions.Click()) {
-			///If the movie has been moved
-			if (bools.moveMovie) {
+		else if (!GV::obj.actions.Click()) {
+			//If the movie has been moved
+			if (bools.moveMovie)
 				bools.moveMovie = false;
-			}
+
 			//Resets the Doonce for buttons
 			bools.doonce = false;
 			bools.mouseClick = false;
 			bools.switchOnce = false;
 		}
 
-
-
+		//Hide Context Menu if Window looses focus
 		if (!bools.focus) {
 			mod.basic->contextMenuShown = false;
-			mod.other->contextMenuShown = false;
 			mod.basic->showSelector();
-			mod.other->showSelector();
+
+			mod.mainMovie->contextMenuShown = false;
+			mod.mainMovie->showSelector();
 		}
 
-		obj.md.Timer();
+		obj.movie.movieTimers();
 
-		if (mod.oneMovie->switchON) 
-			obj.md.smallTimer();
+		GV::obj.me.checkUI(tStart, tEnd);
 
-		obj.me.checkUI(tStart, tEnd);
+		if (!bools.menuIsShown && sfemov.movie->getPlayingOffset().asSeconds() >= sfemov.movie->getDuration().asSeconds()) {
+
+			bools.endOfMovie = true;
+			bools.movieIsPlaying = false;
+			bools.movie2Active = false;
+
+			sfm.window.clear(sf::Color(50,50,50));
+			
+			mod.ret->draw();
+			mod.replay->draw();
+			
+			sfm.window.display();
+		}
 
 		///Menu
-		if (!bools.movieIsPlaying) {
+		if (!bools.movieIsPlaying && !bools.endOfMovie) {
+			bools.menuIsShown = true;
 			localMenuRender();
 		}
 			///Movie play Locally
-		else if (!bools.border) {
-			localMovieRender();
+		else if (!bools.border && !bools.endOfMovie) {
+			bools.menuIsShown = false;
+				localMovieRender();
 
+				if (!bools.beforeStart) {
+					//Need to reset the window, otherwise coordinates are weird.
+					ShowWindow(sfm.window.getSystemHandle(), SW_RESTORE);
+					ShowWindow(sfm.window.getSystemHandle(), SW_MAXIMIZE);
+					bools.beforeStart = true;
+				}
 		}
-	}
+	}//Draw END
 }//Main Function END
 
-///////////////////////////////////////////////////////////////////////////////////////////
-/// \Renders the menu Objects
-///////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////
+/// \Renders the menu objects							  ///
+/////////////////////////////////////////////////////////////
 void localMenuRender() {
 
 	sfm.window.clear();   //Clears the RAM of all unused stuff /*I think*/
@@ -246,53 +257,48 @@ void localMenuRender() {
 	if (mod.basic->contextMenuShown) {
 		mod.basic->draw();
 	}
-	else if (mod.other->contextMenuShown) {
-		mod.other->draw();
-	}
+
+	if (obj.debugs.writing)
+		obj.debugs.draw();
 
 	sfm.window.display();   //Display what was just drawn
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////
-/// \Renders the movie(s) Locally
-///////////////////////////////////////////////////////////////////////////////////////////
-void localMovieRender() {
-	sfemov.movie.update();   //Updates the fullscreen movie
 
-	if (mod.oneMovie->switchON)
-		sfemov.movie2.update();   //Updates the smaller movie
+/////////////////////////////////////////////////////////////
+/// \Renders the movie(s) Locally                         ///
+/////////////////////////////////////////////////////////////
+void localMovieRender() {
+	obj.movie.updateMovies(sfm.window, *sfemov.movie, *sfemov.movie2);
 
 	sfm.window.clear();   //Clears the RAM
 
 	if (!bools.behind) {
-		sfm.window.draw(sfemov.movie);   //Draws the newly updated fullscreen movie frame
-
-		if (mod.oneMovie->switchON)
-			sfm.window.draw(sfemov.movie2);   //Draws the newly updated smaller movie frame
+		obj.movie.drawMovieInv(sfm.window, *sfemov.movie, *sfemov.movie2);
 	}
 	else {
-
-		if (mod.oneMovie->switchON)
-			sfm.window.draw(sfemov.movie2);   //Draws the newly updated smaller movie frame
-
-		sfm.window.draw(sfemov.movie);   //Draws the newly updated fullscreen movie frame
+		obj.movie.drawMovie(sfm.window, *sfemov.movie, *sfemov.movie2);
 	}
-	sfm.window.draw(sfm.vol1);   //Draws the fullscreen movie volume text
 
-	if (mod.oneMovie->switchON)
-		sfm.window.draw(sfm.vol2);   //Draws the smaller movie volume text
+	obj.movie.drawVol(sfm.window, sfm.vol1, sfm.vol2);
 
-	sfm.window.draw(sfm.tTimer);
+	obj.movie.drawVol(sfm.window, sfm.tTimer, sfm.smalltTimer);
 
-	if (mod.oneMovie->switchON)
-		sfm.window.draw(sfm.smalltTimer);
+	if (mod.mainMovie->contextMenuShown) {
+		mod.mainMovie->draw();
+	}
 
-	sfm.window.display();   //And displays that
+	if (obj.debugs.writing)
+		obj.debugs.draw();
+
+	sfm.window.display();
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///This is a second thread, which means that the videos will play even though you move or resize the window ///
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////
+/// \This is a second thread, which means that the videos ///
+/// \will play even though you move or resize the window  ///
+/////////////////////////////////////////////////////////////
 void rendering(sf::RenderWindow *window) {
 	///Only runs while the SFML window is open
 	while (window->isOpen()) {
@@ -300,36 +306,27 @@ void rendering(sf::RenderWindow *window) {
 		///And the window isnt closed
 		if (bools.movieIsPlaying && bools.border && !windowClosed) {
 			
-			sfemov.movie.update();   //Update the fullscreen movie
-
-			if(mod.oneMovie->switchON)
-			sfemov.movie2.update();   //Updates the smaller movie
+			obj.movie.updateMovies(*window, *sfemov.movie, *sfemov.movie2);
 
 			window->clear();   //Clears the RAM
 
 			///Not in use at the moment, but
 			///If the user what to hide the smaller movie
 			if (!bools.behind) {
-				window->draw(sfemov.movie);
-
-				if (mod.oneMovie->switchON)
-				window->draw(sfemov.movie2);   //In front of the fullscreen movie
+				obj.movie.drawMovieInv(*window, *sfemov.movie, *sfemov.movie2);
 			}
 			else {
-				if (mod.oneMovie->switchON)
-				window->draw(sfemov.movie2); //Behind the fullscreen movie
-
-				window->draw(sfemov.movie);
+				obj.movie.drawMovie(*window, *sfemov.movie, *sfemov.movie2);
 			}
 			
-			window->draw(sfm.vol1);   //Draws the fullscreen movie volume text
-			if (mod.oneMovie->switchON)
-			window->draw(sfm.vol2);   //Draws the smaller movie volume text
+			obj.movie.drawVol(*window, sfm.vol1, sfm.vol2);
 
-			window->draw(sfm.tTimer);
+			//window->draw(sfm.tTimer);
 
-			if (mod.oneMovie->switchON)
-			window->draw(sfm.smalltTimer);
+			//if (mod.oneMovie->switchON)
+			//window->draw(sfm.smalltTimer);
+
+			obj.movie.drawVol(*window, sfm.tTimer, sfm.smalltTimer);
 
 			window->display();   //And displays that
 		}
@@ -357,20 +354,4 @@ void threadStart() {
 void threadPause() {
 	lock_guard<mutex> lk(m);
 	bools.pause = true;   //Tells the thread to start the while loop
-}
-
-//Sets the initial Buttons variables
-void setButtons(Buttons &b, float sX, float sY, string text, sf::Color &c, sf::Color &out, float outsize, sf::Color &tc, sf::Vector2f &p, float scaleX, float scaleY, float extra) {
-	b.setSize(sX, sY);
-	b.setText(text);
-	b.setScale(sf::Vector2f(scaleX, scaleY));
-	b.setButtonColor(c, out, outsize);
-	b.setTextColor(tc);
-	b.setPosition(p, extra);
-}
-
-void setSwitches(Switch &s, float size, sf::Vector2f pos) {
-	s.setBase();
-	s.setScale(sf::Vector2f(size, size));
-	s.setPosition(sf::Vector2f(pos));
 }

@@ -6,5 +6,6 @@ class keyPress : public Events
 {
 public:
 	void press(sf::Event event, sf::Time time);
+	inline void syncMovie();
 };
 

@@ -8,8 +8,9 @@
 #include <sfeMovie\Movie.hpp>
 #include <string>
 
-namespace GV {
+#define SPACER 42   //Random number... 
 
+namespace GV {
 	extern objects obj;
 	extern sfemovie sfemov;
 	extern strings str;
@@ -17,4 +18,5 @@ namespace GV {
 	extern booleans bools;
 	extern modules mod;
 	extern sfml sfm;
+	extern SaveAbleVariables save;
 }

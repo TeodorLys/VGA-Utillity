@@ -9,6 +9,8 @@ using namespace GV;
 Buttons::Buttons(){
 	newScaleX = 0;
 	newScaleY = 0;
+	baseColor = sf::Color(0, 0, 0);
+	outLine = sf::Color(255, 125, 0);
 }
 
 //Sets the initial settings for the text inside the button
@@ -40,9 +42,9 @@ void Buttons::setTextColor(sf::Color c) {
 }
 
 //Sets the button base color, and outline color and thickness
-void Buttons::setButtonColor(sf::Color c, sf::Color outline, float line) {
-	b.setFillColor(c);
-	b.setOutlineColor(outline);
+void Buttons::setButtonColor(float line) {
+	b.setFillColor(baseColor);
+	b.setOutlineColor(outLine);
 	b.setOutlineThickness(line);
 }
 

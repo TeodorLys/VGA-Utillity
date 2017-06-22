@@ -15,6 +15,8 @@ private:
 	sf::Color c;
 	bool doonce;
 public:
+	float xLimit = 0;
+	float yLimit = 0;
 	Actions();
 	void highlight(sf::Text &t, std::string color, float thickness);
 	void highlight(sf::RectangleShape &shape, std::string rcolor);
@@ -28,5 +30,6 @@ public:
 	bool movie2Hover();
 	int ffstv();
 	int lerp();
+	void SetLimits(float LX, float LY);
 };
 
