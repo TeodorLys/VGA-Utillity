@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML\Graphics\Color.hpp>
-#include "../Logger.h"
+#include "Logger.h"
 #include <algorithm>
 
 class Animation {

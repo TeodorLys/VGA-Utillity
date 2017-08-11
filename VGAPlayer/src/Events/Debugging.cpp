@@ -1,7 +1,7 @@
 #include <SFML\Window\Event.hpp>
 #include <SFML\Graphics\Text.hpp>
-#include "../Logger.h"
-#include "../Objects/Debug_Variable.h"
+#include "Logger.h"
+#include "Objects\Debug_Variable.h"
 #include "Debugging.h"
 
 using namespace std;

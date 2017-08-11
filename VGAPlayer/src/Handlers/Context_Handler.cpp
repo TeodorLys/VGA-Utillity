@@ -1,13 +1,13 @@
 #include "Context_Handler.h"
 #include "DEBUG_Defines.h"
 #include "InitialSetup.h"
-#include "mouseEvent.h"
-#include "Debugging.h"
-#include "ContextMenu.h"
+#include "Events\mouseEvent.h"
+#include "Events\Debugging.h"
+#include "Objects\ContextMenu.h"
 #include "Menu_Handler.h"
 #include "Write_Field.h"
-#include "Shared_Modules.h"
-#include "Shared_sfml_Objects.h"
+#include "Shared\Shared_Modules.h"
+#include "Shared\Shared_sfml_Objects.h"
 #include <Windows.h>
 
 using namespace std;

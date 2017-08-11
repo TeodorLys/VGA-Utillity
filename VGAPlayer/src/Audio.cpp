@@ -1,12 +1,12 @@
 #include <sfeMovie\Movie.hpp>
 #include "Audio.h"
-#include "../src/Events/Actions.h"
-#include "../src/Events/mouseEvent.h"
+#include "Events\Actions.h"
+#include "Events\mouseEvent.h"
 #include "InitialSetup.h"
-#include "../src/Objects/Switch.h"
-#include "../src/Shared/Shared_sfml_Objects.h"
-#include "../src/Shared/Shared_sfe_Movie.h"
-#include "../src/Shared/Shared_Modules.h"
+#include "Objects\Switch.h"
+#include "Shared\Shared_sfml_Objects.h"
+#include "Shared\Shared_sfe_Movie.h"
+#include "Shared\Shared_Modules.h"
 
 using namespace std;
 

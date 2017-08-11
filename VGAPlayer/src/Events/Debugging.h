@@ -3,7 +3,7 @@
 #include <SFML\Window\Mouse.hpp>
 #include <SFML\Graphics\RectangleShape.hpp>
 #include <SFML\Graphics\Text.hpp>
-#include "../src/Objects/Debug_Variable.h"
+#include "Objects\Debug_Variable.h"
 
 class Debugging {
 public:

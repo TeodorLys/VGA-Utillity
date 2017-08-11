@@ -1,9 +1,9 @@
 #include "mouseEvent.h"
 #include "Events.h"
-#include "../Audio.h"
-#include "../Events/Animation.h"
-#include "../Events/Actions.h"
-#include "../Shared/Shared_sfml_Objects.h"
+#include "Audio.h"
+#include "Events\Animation.h"
+#include "Events\Actions.h"
+#include "Shared\Shared_sfml_Objects.h"
 
 using namespace std;
 

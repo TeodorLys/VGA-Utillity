@@ -1,6 +1,6 @@
 #pragma once
-#include "../Save/Save_Able_Variables/SaveAble.h"
-#include "../Save/Save_Able_Variables/SaveSettings.h"
+#include "Save\Save_Able_Variables\SaveAble.h"
+#include "..\Save\Save_Able_Variables\SaveSettings.h"
 
 namespace Shared_Save {
  extern SaveSettings settings;

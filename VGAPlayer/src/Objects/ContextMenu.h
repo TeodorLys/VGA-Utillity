@@ -3,7 +3,7 @@
 #include <SFML\Graphics\RenderWindow.hpp>
 #include "ContextMenuObjects.h"
 #include "Spacer.h"
-#include "../Events/Actions.h"
+#include "Events\Actions.h"
 
 class ContextMenu{
 protected:

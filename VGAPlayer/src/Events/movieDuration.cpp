@@ -1,14 +1,14 @@
 #include <sfeMovie\Movie.hpp>
 #include "movieDuration.h"
-#include "../InitialSetup.h"
-#include "../Objects/Switch.h"
-#include "../Objects/Buttons.h"
-#include "../Shared/Shared_Boolean.h"
-#include "../Shared/Shared_sfml_Objects.h"
-#include "../Shared/Shared_sfe_Movie.h"
-#include "../Shared/Shared_Variables.h"
-#include "../Shared/Shared_String.h"
-#include "../Shared/Shared_Modules.h"
+#include "InitialSetup.h"
+#include "Objects\Switch.h"
+#include "Objects\Buttons.h"
+#include "Shared\Shared_Boolean.h"
+#include "Shared\Shared_sfml_Objects.h"
+#include "Shared\Shared_sfe_Movie.h"
+#include "Shared\Shared_Variables.h"
+#include "Shared\Shared_String.h"
+#include "Shared\Shared_Modules.h"
 
 using namespace std;
 

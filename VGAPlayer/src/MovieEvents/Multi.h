@@ -1,8 +1,8 @@
 #pragma once
-#include "../InitialSetup.h"
-#include "../Events/movieDuration.h"
-#include "../Events/MovieEvents.h"
-#include "../Audio.h"
+#include "InitialSetup.h"
+#include "Events\movieDuration.h"
+#include "Events\MovieEvents.h"
+#include "Audio.h"
 
 class multiMovies : public movBase {
 public:

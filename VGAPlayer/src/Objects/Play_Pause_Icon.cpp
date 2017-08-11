@@ -1,8 +1,8 @@
 #include "Play_Pause_Icon.h"
-#include "../Shared/Shared_sfml_Objects.h"
+#include "Shared\Shared_sfml_Objects.h"
 #include <SFML\Graphics\RenderWindow.hpp>
 #include <SFML\Graphics\Transform.hpp>
-#include "../src/Logger.h"
+#include "Logger.h"
 
 using namespace std; // Consider removing this...
 

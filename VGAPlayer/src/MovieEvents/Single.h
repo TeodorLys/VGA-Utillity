@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../src/Events/MovieEvents.h"
+#include "Events\MovieEvents.h"
 
 class singleMovies : public movBase {
 public:

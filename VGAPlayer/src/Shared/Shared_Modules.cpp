@@ -1,9 +1,9 @@
 #include "Shared_Modules.h"
-#include "../Objects/Buttons.h"
-#include "../Objects/Switch.h"
-#include "../Objects/ContextMenuObjects.h"
-#include "../Objects/ContextMenu.h"
-#include "../Shared/Shared_sfml_Objects.h"
+#include "Objects\Buttons.h"
+#include "Objects\Switch.h"
+#include "Objects\ContextMenuObjects.h"
+#include "Objects\ContextMenu.h"
+#include "Shared\Shared_sfml_Objects.h"
 
 
 

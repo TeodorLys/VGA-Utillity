@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SaveAble.h"
-#include "../Logger.h"
+#include "Logger.h"
 #include <algorithm>
 #include <vector>
 #include <fstream>

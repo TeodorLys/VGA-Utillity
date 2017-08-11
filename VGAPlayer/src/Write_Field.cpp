@@ -1,11 +1,11 @@
 #include <string>
 #include <sfeMovie\Movie.hpp>
-#include "../src/Events/Actions.h"
+#include "Events\Actions.h"
 #include "Write_Field.h"
 #include "Logger.h"
-#include "../src/Shared/Shared_sfe_Movie.h"
-#include "../src/Shared/Shared_sfml_Objects.h"
-#include "../src/Shared/Shared_Variables.h"
+#include "Shared\Shared_sfe_Movie.h"
+#include "Shared\Shared_sfml_Objects.h"
+#include "Shared\Shared_Variables.h"
 
 using namespace std;
 

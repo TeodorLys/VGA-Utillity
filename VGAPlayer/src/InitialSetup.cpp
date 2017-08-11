@@ -1,25 +1,25 @@
 #include <boost\filesystem\operations.hpp>
 #include <sfeMovie\Movie.hpp>
-#include "../src/Handlers/Zip_File_Handler.h"
-#include "../src/Events/Debugging.h"
+#include "Handlers\Zip_File_Handler.h"
+#include "Events\Debugging.h"
 #include "Audio.h"
-#include "../src/Objects/Buttons.h"
-#include "../src/Objects/Switch.h"
-#include "../src/Objects/ContextMenu.h"
-#include "../src/Handlers/Context_Handler.h"
-#include "../src/Save/Save_Files.h"
+#include "Objects\Buttons.h"
+#include "Objects\Switch.h"
+#include "Objects\ContextMenu.h"
+#include "Handlers\Context_Handler.h"
+#include "Save\Save_Files.h"
 #include "InitialSetup.h"
 #include "Turbo.h"
-#include "../src/Objects/Debug_Variable.h"
+#include "Objects\Debug_Variable.h"
 
 //Shared\Global Variables
-#include "../src/Shared/Shared_Boolean.h"
-#include "../src/Shared/Shared_sfml_Objects.h"
-#include "../src/Shared/Shared_sfe_Movie.h"
-#include "../src/Shared/Shared_Variables.h"
-#include "../src/Shared/Shared_String.h"
-#include "../src/Shared/Shared_SaveVariables.h"
-#include "../src/Shared/Shared_Modules.h"
+#include "Shared\Shared_Boolean.h"
+#include "Shared\Shared_sfml_Objects.h"
+#include "Shared\Shared_sfe_Movie.h"
+#include "Shared\Shared_Variables.h"
+#include "Shared\Shared_String.h"
+#include "Shared\Shared_SaveVariables.h"
+#include "Shared\Shared_Modules.h"
 /*---(             )---*/
 
 using namespace std;

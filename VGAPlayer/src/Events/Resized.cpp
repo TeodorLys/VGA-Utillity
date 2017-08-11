@@ -1,10 +1,10 @@
 #include "Resized.h"
-#include "../InitialSetup.h"
-#include "../Shared/Shared_sfml_Objects.h"
-#include "../Shared/Shared_sfe_Movie.h"
-#include "../Shared/Shared_Modules.h"
-#include "../Objects/Buttons.h"
-#include "../Objects/Switch.h"
+#include "InitialSetup.h"
+#include "Shared\Shared_sfml_Objects.h"
+#include "Shared\Shared_sfe_Movie.h"
+#include "Shared\Shared_Modules.h"
+#include "Objects\Buttons.h"
+#include "Objects\Switch.h"
 #include <sfeMovie\Movie.hpp>
 
 using namespace std;

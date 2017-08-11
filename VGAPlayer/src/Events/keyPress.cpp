@@ -1,15 +1,15 @@
 #include "keyPress.h"
 #include "Events.h"
 #include "MovieEvents.h"
-#include "../Objects/Switch.h"
-#include "../Write_Field.h"
-#include "../Logger.h"
+#include "Objects\Switch.h"
+#include "Write_Field.h"
+#include "Logger.h"
 #include "Debugging.h"
-#include "../Shared/Shared_Boolean.h"
-#include "../Shared/Shared_sfml_Objects.h"
-#include "../Shared/Shared_sfe_Movie.h"
-#include "../Shared/Shared_Variables.h"
-#include "../Shared/Shared_Modules.h"
+#include "Shared\Shared_Boolean.h"
+#include "Shared\Shared_sfml_Objects.h"
+#include "Shared\Shared_sfe_Movie.h"
+#include "Shared\Shared_Variables.h"
+#include "Shared\Shared_Modules.h"
 
 using namespace std;
 
