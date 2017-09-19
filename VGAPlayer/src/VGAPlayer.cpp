@@ -36,8 +36,8 @@
 
 using namespace std;
 
-std::condition_variable cv;   //Thread lock
-std::mutex m;
+condition_variable cv;   //Thread lock
+mutex m;
 
 chrono::high_resolution_clock::time_point tStart;
 chrono::high_resolution_clock::time_point tEnd;
