@@ -154,7 +154,10 @@ void Logger::Log_Warning(string s, ...) {
 	  break;
 
 	 default:
+     SetConsoleTextAttribute(h_Std_Out, RED);
+FlushConsoleInputBuffer(h_Std_In);
 	  printf("[ERROR]: Given variable was not recognized");
+    SetConsoleTextAttribute(h_Std_Out, csbi.wAttributes);
 	  break;
 	 }
 	 foundPer = false;
