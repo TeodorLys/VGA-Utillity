@@ -172,12 +172,14 @@ void Thread_Rendering(sf::RenderWindow *window) {
  }
 }
 
-
+// Starts the render thread to invoke a pause for main thread
 void Thread_Start() {
  lock_guard<mutex> lk(m);
  pause = false;
  cv.notify_one();
 }
+
+// Pauses the thread and switches back to the main thread 
 void Thread_Pause() {
  lock_guard<mutex> lk(m);
  pause = true;
