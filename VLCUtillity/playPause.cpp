@@ -16,12 +16,7 @@
 
 using namespace std;
 using namespace GV;
-
-//Constructor not in use
-playPause::playPause(){
-}
-
-//Destructor, closes the CreateProcess Handles
+// Destructor, closes the CreateProcess Handles
 playPause::~playPause() {
 	///If the windows has been opened
 	if (canopen) {
