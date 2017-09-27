@@ -25,7 +25,7 @@
 using namespace std;
 
 //Aspect ratio is weird... if second movie is 
-//greater than two it is one value and otherwise it is another
+//greater than two it is one value and otherwise it is another...
 bool Check_Movie_Limits() {
  if (Shared_sfe::movie2->getSize().x / Shared_sfe::movie2->getSize().y > 2) {
   Actions::SetLimits(960 / (1920.f / Shared_sf::window.getSize().x), 455 / (1080.f / Shared_sf::window.getSize().y));
