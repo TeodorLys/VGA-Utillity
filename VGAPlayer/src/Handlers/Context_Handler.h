@@ -8,6 +8,7 @@ class mouseEvent;
 class Debugging;
 class movBase;
 class Write_Field;
+class Events;
 
 namespace sfe {
 	class Movie;
@@ -23,11 +24,11 @@ public:
 
  void Show_Object_Selector(ContextMenu &cM, movBase &Movie_Object,
 						   Debugging &debug, Write_Field &jump_field, float X, float Y, bool &Mouse_has_Clicked,
-						   sfe::Movie &Movie_One, bool &Menu_is_Shown);
+						   sfe::Movie &Movie_One, bool &Menu_is_Shown, Events &ev);
 
  void Menu_Object_Events(ContextMenu &cM, movBase &Movie_Object, Debugging &debug, Write_Field &jump_field,
 						 float X, float Y, bool &Mouse_has_Clicked,
-						 sfe::Movie &Movie_One, bool &Menu_is_Shown);
+						 sfe::Movie &Movie_One, bool &Menu_is_Shown, Events &ev);
  void Menu_Object_Setup();
 };
 

@@ -2,6 +2,7 @@
 #include "MovieEvents\Multi.h"
 #include "MovieEvents\Single.h"
 #include "Objects\Buttons.h"
+#include "Handlers\Menu_Handler.h"
 #include "Logger.h"
 #include "DEBUG_Defines.h"
 #include "Shared\Shared_sfml_Objects.h"
@@ -27,36 +28,43 @@ void multiMovies::pause() {
  Shared_sfe::movie2->pause();
 }
 
-void multiMovies::Draw_Text(sf::RenderWindow &window, sf::Text &t1, sf::Text &t2) {
+void multiMovies::Draw_Text(sf::Text &t1, sf::Text &t2) {
  Shared_sf::window.draw(t1);
  Shared_sf::window.draw(t2);
 }
 
-void multiMovies::drawShape(sf::RenderWindow &window, sf::RectangleShape &shape1, sf::RectangleShape &shape2) {
+void multiMovies::drawShape(sf::RectangleShape &shape1, sf::RectangleShape &shape2) {
  Shared_sf::window.draw(shape1);
  Shared_sf::window.draw(shape2);
 }
 
-void multiMovies::drawMovie(InitialSetup &initial, sf::RenderWindow &window, sfe::Movie &mov1, sfe::Movie &mov2) {
+void multiMovies::drawMovie(sfe::Movie &mov1, sfe::Movie &mov2) {
  if (Shared_bool::endOfSecondMovie) {
   Shared_Mod::secondReplay->draw();
  } else {
-  Shared_sf::window.draw(mov2);
+  if (Shared_bool::second_Movie_Popout)
+   Shared_sf::second_Window.draw(mov2);
+  else 
+   Shared_sf::window.draw(mov2);
  }
  Shared_sf::window.draw(mov1);
 }
 
 
-void multiMovies::drawMovieInv(InitialSetup &initial ,sf::RenderWindow &window, sfe::Movie &mov1, sfe::Movie &mov2) {
+void multiMovies::drawMovieInv(sfe::Movie &mov1, sfe::Movie &mov2) {
  Shared_sf::window.draw(mov1);
 
  if (Shared_bool::endOfSecondMovie)
   Shared_Mod::secondReplay->draw();
- else
-  Shared_sf::window.draw(mov2);
+ else {
+  if (Shared_bool::second_Movie_Popout)
+   Shared_sf::second_Window.draw(mov2);
+  else
+   Shared_sf::window.draw(mov2);
+ }
 }
 
-void multiMovies::updateMovies(sf::RenderWindow &window, sfe::Movie &mov1, sfe::Movie &mov2) {
+void multiMovies::updateMovies(sfe::Movie &mov1, sfe::Movie &mov2) {
  Shared_sfe::movie->update();
  Shared_sfe::movie2->update();
 }
@@ -102,23 +110,23 @@ void singleMovies::pause() {
  Shared_sfe::movie->pause();
 }
 
-void singleMovies::Draw_Text(sf::RenderWindow &window, sf::Text &t1, sf::Text &t2) {
+void singleMovies::Draw_Text(sf::Text &t1, sf::Text &t2) {
  Shared_sf::window.draw(t1);
 }
 
-void singleMovies::drawShape(sf::RenderWindow &window, sf::RectangleShape &shape1, sf::RectangleShape &shape2) {
+void singleMovies::drawShape(sf::RectangleShape &shape1, sf::RectangleShape &shape2) {
  Shared_sf::window.draw(shape1);
 }
 
-void singleMovies::drawMovie(InitialSetup &initial, sf::RenderWindow &window, sfe::Movie &mov1, sfe::Movie &mov2) {
+void singleMovies::drawMovie(sfe::Movie &mov1, sfe::Movie &mov2) {
  Shared_sf::window.draw(mov1);
 }
 
-void singleMovies::drawMovieInv(InitialSetup &initial, sf::RenderWindow &window, sfe::Movie &mov1, sfe::Movie &mov2) {
+void singleMovies::drawMovieInv(sfe::Movie &mov1, sfe::Movie &mov2) {
  Shared_sf::window.draw(mov1);
 }
 
-void singleMovies::updateMovies(sf::RenderWindow &window, sfe::Movie &mov1, sfe::Movie &mov2) {
+void singleMovies::updateMovies(sfe::Movie &mov1, sfe::Movie &mov2) {
  mov1.update();
 }
 

@@ -1,3 +1,4 @@
+
 #include "ContextMenuObjects.h"
 #include <string>
 
@@ -17,4 +18,8 @@ void textButton::textObjects(float divBy, std::string str, sf::RectangleShape &b
 
 std::string textButton::getName() {
 	return t.getString();
+}
+
+void textButton::setColor(sf::Color c) {
+ t.setFillColor(c);
 }

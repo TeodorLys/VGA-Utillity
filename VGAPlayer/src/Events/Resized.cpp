@@ -6,6 +6,7 @@
 #include "Objects\Buttons.h"
 #include "Objects\Switch.h"
 #include <sfeMovie\Movie.hpp>
+#include "Shared\Shared_Boolean.h"
 
 using namespace std;
 //using namespace GV;
@@ -15,9 +16,15 @@ Resized::Resized(InitialSetup* initial_Object) : initial(initial_Object) {}
 void Resized::playResize() {
  //Fits the smaller movie the the resized window size
  if (Shared_Mod::oneMovie->switchON) {
-  Shared_sfe::movie2->fit(0, 0, (float)Shared_sf::window.getSize().x, (float)Shared_sf::window.getSize().y);
-  Shared_sfe::movie2->setPosition((float)Shared_sf::window.getSize().x / 2, (float)Shared_sfe::movie->getPosition().y);
-  Shared_Mod::secondReplay->setPosition(sf::Vector2f((float)Shared_sf::window.getSize().x / 2, (float)Shared_sf::window.getSize().y - 100.f), 5);
+  if (Shared_bool::second_Movie_Popout) {
+   Shared_sfe::movie2->fit(0, 0, (float)Shared_sf::second_Window.getSize().x, (float)Shared_sf::second_Window.getSize().y);
+   Shared_Mod::secondReplay->setPosition(sf::Vector2f((float)Shared_sf::second_Window.getSize().x / 2, (float)Shared_sf::second_Window.getSize().y - 100.f), 5);
+  }
+  else {
+   Shared_sfe::movie2->fit(0, 0, (float)Shared_sf::window.getSize().x, (float)Shared_sf::window.getSize().y);
+   Shared_sfe::movie2->setPosition((float)Shared_sf::window.getSize().x / 2, (float)Shared_sfe::movie->getPosition().y);
+   Shared_Mod::secondReplay->setPosition(sf::Vector2f((float)Shared_sf::window.getSize().x / 2, (float)Shared_sf::window.getSize().y - 100.f), 5);
+  }
  }
  //Fits the "Fullscreen" movie for the resized window size
  Shared_sfe::movie->fit(0.f, 0.f, (float)Shared_sf::window.getSize().x, (float)Shared_sf::window.getSize().y);

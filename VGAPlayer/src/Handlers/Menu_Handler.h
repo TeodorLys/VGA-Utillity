@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML\Config.hpp>
 class InitialSetup;
 class movBase;
 class Audio;
@@ -7,6 +8,7 @@ class Events;
 namespace sfe {
  class Movie;
 };
+
 
 class Menu_Handler {
 private:
@@ -17,6 +19,7 @@ public:
  void Menu_Buttons(sfe::Movie &Movie_One, sfe::Movie &Movie_Two,
 				   InitialSetup &initial, Audio &_audio, Events &Events_Object);
  void End_Screen(bool &get_Doonce, sfe::Movie &Movie_One, InitialSetup &initial, movBase &Movie_Object);
+ void set_Info_Opacity(sf::Uint8);
  static void Return_To_Menu(movBase &Movie_Events_Object);
  static void Replay_Movies(sfe::Movie &Movie_One, movBase &Movie_Events_Object);
 };

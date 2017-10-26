@@ -33,4 +33,5 @@ public:
 	void startSecondMovie();
 	void enterFullscreen(sf::RenderWindow &window);
 	void exitFullscreen(sf::RenderWindow &window);
+	void Popout_Second_Window();
 };

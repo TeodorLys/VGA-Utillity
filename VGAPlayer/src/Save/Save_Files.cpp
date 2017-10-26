@@ -34,7 +34,7 @@ void Save_Files::Get_Saved_Files(Audio* _audio, InitialSetup *initial) {
    _audio->second_Mov_Vol = static_cast<float>(Shared_Save::volume2.getV(0));  
    Shared_Var::w = static_cast<float>(Shared_Save::window_Width.getV(0));
    Shared_Var::h = static_cast<float>(Shared_Save::window_Height.getV(0));
-   print.Log_Info("Loaded Switch %i", static_cast<int>(Shared_Save::One_Switch_On.getV(false)));
+   print.Log_Info("Loaded Switch %b", Shared_Save::One_Switch_On.getV(false));
    Shared_Mod::oneMovie->switchON = Shared_Save::One_Switch_On.getV(false);
    Shared_bool::maximized_On_Exit_Program = Shared_Save::maximized_On_Exit.getV(false);
 

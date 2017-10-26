@@ -1,4 +1,7 @@
 #include "ContextMenu.h"
+#include "ContextMenuObjects.h"
+#include "Spacer.h"
+#include "Events\Actions.h"
 
 using namespace std;
 
@@ -19,8 +22,8 @@ void ContextMenu::setup() {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-/// \Adds the different text objects to a vector, so										 ///
-/// \you can access it with ease                                                             ///
+/// \Adds the different text objects to a vector, so
+/// \you can access it with ease
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void ContextMenu::addObject(textButton &t, string name, sf::Font &sys) {
 	t.textObjects(divBy, name, menu, sys);
@@ -30,7 +33,7 @@ void ContextMenu::addObject(textButton &t, string name, sf::Font &sys) {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-/// Overloaded function of the above														 ///
+/// For adding a spacer in the Context menu
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void ContextMenu::addObject(Spacer &space, int spacer) {
 	if (spacer == 42) {
@@ -44,6 +47,16 @@ void ContextMenu::addObject(Spacer &space, int spacer) {
 	}
 }
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+/// For adding a spacer in the Context menu
+////////////////////////////////////////////////////////////////////////////////////////////////
+void ContextMenu::addObject(textButton &t, string name, sf::Font &sys, sf::Color c) {
+ t.textObjects(divBy, name, menu, sys);
+ t.setColor(c);
+ objects.push_back(t);
+ spacerIndex++;
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 ///Sets up all of the text objects

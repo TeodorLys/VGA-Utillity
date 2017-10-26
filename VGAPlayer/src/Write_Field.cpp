@@ -89,6 +89,7 @@ void Write_Field::setOpacity(int AlphaColor) {
 
 void Write_Field::value_Field(sf::Event *event) {
  if (event->type == sf::Event::TextEntered) {
+  //print.Log_Info("Key: %i", static_cast<int>(Shared_sf::event.text.unicode));
   switch (event->text.unicode) {
   case 8:
    if (field_Value.size() > 0)

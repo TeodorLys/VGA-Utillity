@@ -1,5 +1,5 @@
-#include "Events.h"
 #include <Windows.h>
+#include "Events.h"
 #include "keyPress.h"
 #include "Resized.h"
 #include "InitialSetup.h"
@@ -41,7 +41,7 @@ void Events::checkKeypress(sf::Event event) {
 }//Poll event END
 
 
-///Sets the window in BORDERLESS fullscreen mode
+//Sets the window in BORDERLESS fullscreen mode
 void Events::enterFullscreen(sf::RenderWindow &window) {
  WINDOWPLACEMENT pl;
  GetWindowPlacement(Shared_sf::window.getSystemHandle(), &pl);
@@ -71,7 +71,7 @@ void Events::enterFullscreen(sf::RenderWindow &window) {
 }
 
 
-///Exits the BORDERLESS fullscreen 
+//Exits the BORDERLESS fullscreen 
 void Events::exitFullscreen(sf::RenderWindow &window) {
  SetWindowLong(window.getSystemHandle(), GWL_STYLE, saved_Style);
 
@@ -87,7 +87,7 @@ void Events::exitFullscreen(sf::RenderWindow &window) {
 }
 
 
-///Runs all of the setup for the movies
+//Runs all of the setup for the movies
 void Events::startMovies() {
 	Shared_bool::movie_is_Playing = true;
 	Shared_sfe::movie->fit(0, 0, Shared_Var::w, Shared_Var::h);
@@ -128,9 +128,8 @@ void Events::startSecondMovie() {
  }
 }
 
-//
+
 //Saves the basic settings; like, Volume and window size
-//
 inline void Save_to_Settings_ini(InitialSetup* initial) {
  if (Shared_Str::setting.is_open()) {
   if (Shared_bool::movie_is_Playing) {
@@ -161,6 +160,7 @@ inline void Save_to_Settings_ini(InitialSetup* initial) {
   Save_Files::Variables_Settings_to_Save();
  }
 }
+
 
 void Events::SaveSettings() {
  string p = Shared_Str::current.string() + "/config\\Settings.ini";
@@ -205,4 +205,14 @@ void Events::SaveSettings() {
    t << initial->allHash[a] << endl;
  }
  t.close();
+}
+
+
+void Events::Popout_Second_Window() {
+ Shared_bool::second_Movie_Popout = true;
+ Shared_sf::second_Window.create(sf::VideoMode((unsigned int)Shared_sfe::movie2->getSize().x, (unsigned int)Shared_sfe::movie2->getSize().y), "SECOND WINDOW", sf::Style::Default);
+ Shared_sf::second_Window.setFramerateLimit(60);
+ Shared_sf::second_Window.setVerticalSyncEnabled(true);
+ Shared_sfe::movie2->setScale(1, 1);
+ Shared_sfe::movie2->fit(0,0, Shared_sfe::movie2->getSize().x, Shared_sfe::movie2->getSize().y, true);
 }

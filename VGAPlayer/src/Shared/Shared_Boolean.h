@@ -13,6 +13,8 @@ namespace Shared_bool {
  extern bool Maximized_on_Exit_Fullscreen;
  extern bool maximized_On_Exit_Program;
  extern bool movie_Status_Changed;
+ extern bool set_Default_Movie;
+ extern bool second_Movie_Popout;
 
  //Temporary!!
  extern bool get;

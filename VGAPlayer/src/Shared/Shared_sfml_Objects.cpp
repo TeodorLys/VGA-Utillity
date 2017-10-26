@@ -2,6 +2,7 @@
 
 namespace Shared_sf {
  sf::Event event;
+ sf::Event second_Event;
  sf::Time off;
  sf::Font font;
  sf::Font sysFont;
@@ -19,5 +20,6 @@ namespace Shared_sf {
  sf::Color COMov = sf::Color(255, 255, 255);
  sf::Color COVGA = sf::Color(255, 255, 255);
  sf::RenderWindow window;
+ sf::RenderWindow second_Window;
  sf::Mouse mouse;
 };

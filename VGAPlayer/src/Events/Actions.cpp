@@ -55,11 +55,11 @@ int Actions::ffstv() {
 }
 
 bool Actions::Is_Mouse_Within_Window(sf::RenderWindow &window, sf::Mouse &mouse) {
- if (mouse.getPosition().x > (int)window.getSize().x || mouse.getPosition().y > (int)window.getSize().y) {
-  return false;
+ if (mouse.getPosition(window).x > (int)window.getSize().x || mouse.getPosition(window).y > (int)window.getSize().y) {
+  return true;
  }
  else {
-  return true;
+  return false;
  }
 }
 

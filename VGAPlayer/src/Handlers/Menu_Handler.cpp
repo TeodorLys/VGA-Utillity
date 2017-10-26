@@ -12,6 +12,7 @@
 #include "Shared\Shared_Variables.h"
 #include "Shared\Shared_sfe_Movie.h"
 #include "Shared\Shared_Modules.h"
+#include "Shared\Shared_sfml_Objects.h"
 
 using namespace std;
 
@@ -111,6 +112,12 @@ void Menu_Handler::End_Screen(bool &get_Doonce, sfe::Movie &Movie_One, InitialSe
   Actions::Click() && !get_Doonce ? Return_To_Menu(Movie_Object) : 0;
 }
 
+void Menu_Handler::set_Info_Opacity(sf::Uint8 alphaColor) {
+ Shared_sf::vol1.setFillColor(sf::Color(Shared_sf::vol1.getFillColor().r, Shared_sf::vol1.getFillColor().g, Shared_sf::vol1.getFillColor().b, alphaColor));
+ Shared_sf::vol2.setFillColor(sf::Color(Shared_sf::vol2.getFillColor().r, Shared_sf::vol2.getFillColor().g, Shared_sf::vol2.getFillColor().b, alphaColor));
+ Shared_sf::smalltTimer.setFillColor(sf::Color(Shared_sf::smalltTimer.getFillColor().r, Shared_sf::smalltTimer.getFillColor().g, Shared_sf::smalltTimer.getFillColor().b, alphaColor));
+ Shared_sf::tTimer.setFillColor(sf::Color(Shared_sf::tTimer.getFillColor().r, Shared_sf::tTimer.getFillColor().g, Shared_sf::tTimer.getFillColor().b, alphaColor));
+}
 
 void Menu_Handler::Return_To_Menu(movBase &Movie_Events_Object) {
  Movie_Events_Object.stop();

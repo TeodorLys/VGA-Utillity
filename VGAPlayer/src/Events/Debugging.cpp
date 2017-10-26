@@ -6,7 +6,8 @@
 
 using namespace std;
 
-Debugging::Debugging(sf::RenderWindow &w, sf::Mouse &m, sf::Event &ev, sf::Font &font) : window(&w), mouse(&m), event(&ev), sys(&font) {
+Debugging::Debugging(sf::RenderWindow &w, sf::Mouse &m, sf::Event &ev, sf::Font &font)
+                     : window(&w), mouse(&m), event(&ev), sys(&font) {
  bg.setPosition(sf::Vector2f((float)mouse->getPosition(*window).x, (float)mouse->getPosition(*window).y));
  bg.setFillColor(sf::Color(50, 50, 50, 100));
  bg.setOutlineColor(sf::Color(70, 70, 70, 100));
@@ -18,10 +19,11 @@ void Debugging::Add_Debug_Variables(Debug_Variable &dv) {
  debug_Vars.push_back(dv);
 }
 
-void Debugging::setPosition(sf::Vector2f a) {
- bg.setPosition(a);
 
- float y = 0;
+void Debugging::setPosition(sf::Vector2f a) {
+ bg.setPosition(a);   //Sets the position of the SFML object
+
+ float y = 0;   //A temporary save variable
 
  for (size_t a = 0; a < debug_Vars.size(); a++) {
   if (a != 0)
@@ -34,28 +36,30 @@ void Debugging::setPosition(sf::Vector2f a) {
  }
 }
 
+
+//Basically a constructor, but needs to be called after viewport settings
 void Debugging::Setup() {
+ //Sets up the sf::Text object for the variable name.
  for (size_t a = 0; a < debug_Vars.size(); a++) {
   debug_Vars[a].Variable_Name.setFont(*sys);
   debug_Vars[a].Variable_Name.setString(debug_Vars[a].getName());
   debug_Vars[a].Variable_Name.setCharacterSize(25);
   debug_Vars[a].Variable_Name.setPosition(sf::Vector2f(bg.getPosition().x, bg.getPosition().y));
-
-  if (debug_Vars[a].Variable_Name.getGlobalBounds().width > biggest_Text) {
+  
+  //Just for esthetic purpose, changes the distance between Variable_Name and the Value
+  if (debug_Vars[a].Variable_Name.getGlobalBounds().width > biggest_Text)
    biggest_Text = debug_Vars[a].Variable_Name.getGlobalBounds().width + 50;
-  }
- }
-
- for (size_t a = 0; a < debug_Vars.size(); a++) {
-
+ 
   debug_Vars[a].value.setFont(*sys);
   debug_Vars[a].value.setString("0");
   debug_Vars[a].value.setCharacterSize(25);
   debug_Vars[a].value.setPosition(sf::Vector2f(biggest_Text - 20, debug_Vars[a].Variable_Name.getPosition().y));
-
  }
- debug_Vars[0].value.setFillColor(sf::Color(0, 255, 0));
- bg.setSize(sf::Vector2f(biggest_Text, (30 * (float)debug_Vars.size())));
+
+ debug_Vars[0].value.setFillColor(sf::Color(0, 255, 0));  //Selects the first variable
+
+ //Changes the background based on the longest variable name
+ bg.setSize(sf::Vector2f(biggest_Text, (30 * (float)debug_Vars.size())));  
  bg_X = bg.getSize().x;
 }
 
@@ -77,6 +81,7 @@ void Debugging::Change_Write(bool b) {
 }
 
 
+//Changes the selected value to edit
 void Debugging::Choose_Write() {
  for (size_t a = 0; a < debug_Vars.size(); a++) {
   if (debug_Vars[a].value.getFillColor().r == 0 && debug_Vars[a].value.getFillColor().b == 0) {
@@ -86,6 +91,8 @@ void Debugging::Choose_Write() {
   }
  }
 }
+
+
 
 void Debugging::valueField() {
  if (!initialWrite) {
@@ -116,7 +123,7 @@ void Debugging::valueField() {
 	 else if (debug_Vars[a].get_ID() == "bool") {
 	  convValueB = static_cast<bool>(stoi(debug_Vars[a].written_Value.c_str()));
 	  debug_Vars[a].set_Data<bool>(convValueB);
-	  //print.Log_Info("Debug_Window, Entered: %b, To: %s", convValueB, debug_Vars[a].getName().c_str());	 }
+	  //print.Log_Info("Debug_Window, Entered: %b, To: %s", convValueB, debug_Vars[a].getName().c_str());
 	 }
 	}
    }

@@ -1,7 +1,10 @@
 #include <boost\filesystem\operations.hpp>
 #include <sfeMovie\Movie.hpp>
 #include "Handlers\Zip_File_Handler.h"
+#include "Events\Actions.h"
 #include "Events\Debugging.h"
+#include "Objects\ContextMenuObjects.h"
+#include "Objects\Spacer.h"
 #include "Audio.h"
 #include "Objects\Buttons.h"
 #include "Objects\Switch.h"
@@ -12,7 +15,7 @@
 #include "Turbo.h"
 #include "Objects\Debug_Variable.h"
 
-//Shared\Global Variables
+/*---(Shared Variables)---*/
 #include "Shared\Shared_Boolean.h"
 #include "Shared\Shared_sfml_Objects.h"
 #include "Shared\Shared_sfe_Movie.h"
@@ -20,7 +23,7 @@
 #include "Shared\Shared_String.h"
 #include "Shared\Shared_SaveVariables.h"
 #include "Shared\Shared_Modules.h"
-/*---(             )---*/
+/*---(Shared Variables)---*/
 
 using namespace std;
 
@@ -49,7 +52,7 @@ void InitialSetup::Setup_Window() {
 
  sf::ContextSettings settings;
 
- settings.antialiasingLevel = 5;
+ settings.antialiasingLevel = 0;
 
  sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
 
@@ -67,10 +70,11 @@ void InitialSetup::Setup_Window() {
 
  Import_from_File();
  
+ //Need to have these 'setSize' here to "Reset" the window dimentions... its Weird
  Shared_sf::window.setSize(sf::Vector2u(Shared_sf::window.getSize().x - 10, Shared_sf::window.getSize().y));
- if (Shared_bool::maximized_On_Exit_Program) {
+ if (Shared_bool::maximized_On_Exit_Program)
   ShowWindow(Shared_sf::window.getSystemHandle(), SW_MAXIMIZE);
- }
+
  Shared_sf::window.setSize(sf::Vector2u(Shared_sf::window.getSize().x + 10, Shared_sf::window.getSize().y));
 
  icon.create(32, 32, t.turboBuddy);   //Window icon
@@ -81,20 +85,20 @@ void InitialSetup::Setup_Window() {
  //
  //The Menu Background
  //
- 
+
  Shared_sf::theCrew.setSize(sf::Vector2f((float)Shared_sf::theCrew_Texture.getSize().x, (float)Shared_sf::theCrew_Texture.getSize().y));
  Shared_sf::theCrew.setOrigin((float)Shared_sf::theCrew.getSize().x / 2, (float)Shared_sf::theCrew.getSize().y / 2);
  Shared_sf::theCrew.setPosition((float)Shared_sf::window.getSize().x / 2, 300);
 
  //"Fullscreen" movie Volume
  setText(Shared_sf::vol1, to_string(_audio->first_Mov_Vol), sf::Vector2f(0, 0), 32, Shared_sf::font);
- //"Smaller" movie Volume
- setText(Shared_sf::vol2, to_string((int)_audio->second_Mov_Vol), sf::Vector2f((float)Shared_sf::window.getSize().x, 0), 32, Shared_sf::font);
  //"Fullscreen" movie timer
  setText(Shared_sf::tTimer, "0", sf::Vector2f(0, Shared_sf::window.getSize().y - Shared_sf::tTimer.getGlobalBounds().height), 32, Shared_sf::font);
+ //"Smaller" movie Volume
+ setText(Shared_sf::vol2, to_string((int)_audio->second_Mov_Vol), sf::Vector2f((float)Shared_sf::window.getSize().x, 0), 32, Shared_sf::font);
  //"Smaller" movie timer
  setText(Shared_sf::smalltTimer, "0", sf::Vector2f((float)Shared_sf::window.getSize().x, (float)Shared_sf::window.getSize().y), 32, Shared_sf::font);
-
+ 
 
  Shared_sf::b.setTexture(&Shared_sf::base);
  Shared_sf::b.setSize(sf::Vector2f((float)Shared_sf::window.getSize().x, (float)Shared_sf::window.getSize().y));
@@ -113,7 +117,7 @@ void Add_to_Debugger(std::string s, Debug_Variable &dv, Debugging &d, T &var) {
 void InitialSetup::init_Debug(Debugging &debug) {
  Debug_Variable dv;
  
- Add_to_Debugger<float>("MOVIE 1 VOLUME", dv, debug, Shared_Var::getf);
+ Add_to_Debugger<float>("NOT IN USE!!!aa", dv, debug, Shared_Var::getf);
 
  debug.Setup();
 }
@@ -127,7 +131,9 @@ void InitialSetup::Import_from_File() {
  t.erase(1, t.length());
  string safe_Font_Path = t + ":\\windows\\fonts\\arial.ttf";   //If vgafont is not found
  string sys_Font_Path = t + ":\\windows\\fonts\\segoeui.ttf";   //For all system stuff, context menu etc...
- Zip_File_Handler images;
+ Zip_File_Handler images;  //Returns the images that is in the content zip file
+
+ //Generates a random number, to deside which image to present
  switch (Actions::ffstv()) {
  case 0:
   theCrew_Path = "FFSTV.PNG";
@@ -259,9 +265,7 @@ bool InitialSetup::LoadMovie(int n, sfe::Movie **Movie_to_Load) {
  }
  //So it doesnt try to load a file that has not been selected, i.e "NONE" is defalt (which is not a path...)
  if (ffs != "NONE" || mov != "NONE") {
-  wstring t;
   string h;
-  LPCWSTR message;
   string movie_Path;
 
   if (n == 1)
@@ -274,9 +278,7 @@ bool InitialSetup::LoadMovie(int n, sfe::Movie **Movie_to_Load) {
   if (!(**Movie_to_Load).openFromFile(movie_Path)) {
    print.Log_Warning("%s could not be opened", movie_Path.c_str());
    h = "Could not open\n" + movie_Path;
-   t = wstring(h.begin(), h.end());
-   message = t.c_str();
-   msg = MessageBox(NULL, message, L"PATH WAS NOT FOUND", MB_OKCANCEL);
+   msg = MessageBox(NULL, (LPCWSTR)h.c_str(), L"PATH WAS NOT FOUND", MB_OKCANCEL);
    if (msg == IDOK || msg == IDCANCEL)
 	goto Failed;
   }
@@ -313,6 +315,7 @@ bool InitialSetup::LoadMovie(int n, sfe::Movie **Movie_to_Load) {
   Save_Files::Check_Movie_Watched(allHash, combHash);
   return true;
  }
+ //Last resort - fail message
  print.Log_Error("Some if statement fell through...");
  return false;
 }//LoadMovie Function END
@@ -379,12 +382,12 @@ void InitialSetup::setButtons(Buttons &b, float sX, float sY, string text, sf::C
  b.setText(text);
  b.setScale(sf::Vector2f(scaleX, scaleY));
  b.baseColor = sf::Color(c);
- b.outLine = sf::Color(out);
+ b.outLine   = sf::Color(out);
  b.setButtonColor(outsize);
  b.setTextColor(tc);
  b.setPosition(p, extra);
  b.baseColor = sf::Color(c);
- b.outLine = sf::Color(out);
+ b.outLine   = sf::Color(out);
 }
 
 
@@ -396,23 +399,24 @@ void InitialSetup::setSwitches(Switch &s, float size, sf::Vector2f pos) {
 
 
 void InitialSetup::Movie2Limits() {
-	movie_Two_is_Greater ? Actions::SetLimits(960 / (1920.f / Shared_sf::window.getSize().x), 455 / (1080.f / Shared_sf::window.getSize().y)) :
-		Actions::SetLimits(930 / (1920.f / Shared_sf::window.getSize().x), 510 / (1080.f / Shared_sf::window.getSize().y));
+	movie_Two_is_Greater ? 
+	 Actions::SetLimits(960 / (1920.f / Shared_sf::window.getSize().x), 455 / (1080.f / Shared_sf::window.getSize().y)) :
+	 Actions::SetLimits(930 / (1920.f / Shared_sf::window.getSize().x), 510 / (1080.f / Shared_sf::window.getSize().y));
 }
 
 
 void InitialSetup::initializeButtons() {
- Shared_Mod::play = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
+ Shared_Mod::play  = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
  Shared_Mod::ffstv = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
- Shared_Mod::film = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
+ Shared_Mod::film  = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
 
- Shared_Mod::replay = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
- Shared_Mod::ret = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
+ Shared_Mod::replay       = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
+ Shared_Mod::ret          = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
  Shared_Mod::secondReplay = new Buttons(&Shared_sf::window, &Shared_sf::mouse, &Shared_sf::font, &Shared_bool::focus);
 
  Shared_Mod::oneMovie = new Switch(Shared_bool::focus, Shared_sf::mouse, Shared_sf::window);
  
- Shared_Mod::about = new textButton;
+ Shared_Mod::about       = new textButton;
  Shared_Mod::mainMovText = new textButton;
- Shared_Mod::spacers = new Spacer;
+ Shared_Mod::spacers     = new Spacer;
 }
