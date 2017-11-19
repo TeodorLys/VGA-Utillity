@@ -45,6 +45,11 @@ bool Check_Movie_Limits() {
 InitialSetup::InitialSetup(mouseEvent* mou, Audio *Audio_Object, Context_Handler* cM_Handle, Resized *resized_Object) :
  ffs("NONE"), mov("NONE"), me(mou), _audio(Audio_Object), context_Handle(cM_Handle), re(resized_Object) {}
 
+InitialSetup::~InitialSetup() {
+ //delete _audio;
+ //delete context_Handle;
+ //delete re;
+}
 
 void InitialSetup::Setup_Window() {
  turbo t;

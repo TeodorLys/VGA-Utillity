@@ -16,6 +16,7 @@ namespace Shared_bool {
  bool movie_Status_Changed		   = false;
  bool set_Default_Movie			   =  true;	
  bool second_Movie_Popout          = false;
+ bool Start_Logging                = false;
 
  //Temporary!!, Debugger
  bool get = false;

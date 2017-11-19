@@ -23,6 +23,7 @@ public:
 
 	sf::RectangleShape b;
 	Buttons(sf::RenderWindow *w, sf::Mouse *m, sf::Font *f, bool *fo);
+	~Buttons();
 	float newScaleX = 0;
 	float newScaleY = 0;
 	void setText(std::string str);

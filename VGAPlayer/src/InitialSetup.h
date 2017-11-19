@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML\Graphics\Text.hpp>
 #include "Logger.h"
+#include <memory>
+
 
 class Buttons;
 class Switch;
@@ -31,6 +33,11 @@ private:
  void Import_from_File();
  void setText(sf::Text &t, std::string str, sf::Vector2f pos, unsigned int charSize, sf::Font &font);
 
+ //std::shared_ptr<mouseEvent> me;
+ //std::shared_ptr<Audio> _audio;
+ //std::shared_ptr<Context_Handler> context_Handle;
+ //std::shared_ptr<Resized> re;
+
  mouseEvent *me;
  Audio *_audio;
  Context_Handler *context_Handle;
@@ -45,6 +52,7 @@ protected:
  
 public:
  InitialSetup(mouseEvent*, Audio* Audio_Object, Context_Handler* cM_Handle, Resized *resized_Object);
+ ~InitialSetup();
  void initializeButtons();
  void init_Debug(Debugging &debug);
  void Setup_Window();

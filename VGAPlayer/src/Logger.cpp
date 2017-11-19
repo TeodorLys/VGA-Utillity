@@ -11,7 +11,7 @@ string get_Bool(int a) {
 }
 
 Logger::Logger(){
- GetConsoleScreenBufferInfo(h_Std_Out, &csbi);
+ //GetConsoleScreenBufferInfo(h_Std_Out, &csbi);
 }
 
 void Logger::Set_Level(int level) {

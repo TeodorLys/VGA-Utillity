@@ -13,8 +13,8 @@ public:
  int entered_Hour;
 
 private:
- const std::string limitList = "1234567890.-";   //Debug
- const std::string letter_Limit_List = "1234567890.-smh";
+ std::string limitList = "1234567890.-";   //Debug
+ std::string letter_Limit_List = "1234567890.-smh";
  sf::RectangleShape field_To_Write;
  sf::Text writing_Object;
  sf::Color field_To_Write__Color;

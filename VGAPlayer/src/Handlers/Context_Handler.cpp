@@ -22,30 +22,29 @@ using namespace std;
 
 Context_Handler::Context_Handler(InitialSetup* initial_Object) : initial(initial_Object) {}
 
-
  void Context_Handler::Menu_Object_Setup(){
- Shared_Mod::basic.setup();
- Shared_Mod::basic.addObject(*Shared_Mod::about, "About", Shared_sf::sysFont);
- Shared_Mod::basic.addObject(*Shared_Mod::about, "DEBUG", Shared_sf::sysFont);
- Shared_Mod::basic.objectsSetup();
+ basic.setup();
+ basic.addObject(*Shared_Mod::about, "About", Shared_sf::sysFont);
+ basic.addObject(*Shared_Mod::about, "DEBUG", Shared_sf::sysFont);
+ basic.objectsSetup();
  print.Log_Info("Setup Basic Context Menu");
 
- Shared_Mod::mainMovie.setup();
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Play", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Pause", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Stop", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Jump to", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Fullscreen", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::spacers, 42);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "DEBUG", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::spacers, 42);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Return", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Replay", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "About", Shared_sf::sysFont);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::spacers, 42);
- Shared_Mod::mainMovie.addObject(*Shared_Mod::mainMovText, "Popout Second Movie", Shared_sf::sysFont);
- Shared_Mod::mainMovie.objectsSetup();
- print.Log_Info("Setup 'During playing movie' Context Menu");
+ mainMovie.setup();
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Play", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Pause", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Stop", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Jump to", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Fullscreen", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::spacers, 42);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "DEBUG", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::spacers, 42);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Return", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Replay", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "About", Shared_sf::sysFont);
+ mainMovie.addObject(*Shared_Mod::spacers, 42);
+ mainMovie.addObject(*Shared_Mod::mainMovText, "Popout Second Movie", Shared_sf::sysFont);
+ mainMovie.objectsSetup();
+ print.Log_Info("Setup 'During movie' Context Menu");
 }
 
 
@@ -55,11 +54,11 @@ Context_Handler::Context_Handler(InitialSetup* initial_Object) : initial(initial
 ////////////////////////////////////////////////////////////////////////////////////////////////
 void Context_Handler::Menu_Activator(bool movie_Is_Playing, bool Mouse_Left_Click, bool Window_Is_Focused) {
  if (movie_Is_Playing) {
-  Shared_Mod::basic.contextMenuShown = false;
-  Show_Context_Menu(Mouse_Left_Click, Window_Is_Focused, Shared_Mod::mainMovie);
+  basic.contextMenuShown = false;
+  Show_Context_Menu(Mouse_Left_Click, Window_Is_Focused, mainMovie);
  } else {
-  Shared_Mod::mainMovie.contextMenuShown = false;
-  Show_Context_Menu(Mouse_Left_Click, Window_Is_Focused, Shared_Mod::basic);
+  mainMovie.contextMenuShown = false;
+  Show_Context_Menu(Mouse_Left_Click, Window_Is_Focused, basic);
  }
 }
 
@@ -74,52 +73,55 @@ void Context_Handler::Show_Context_Menu(bool Mouse_Click, bool window_Is_Focused
 }
 
 
-void Context_Handler::Show_Object_Selector(ContextMenu &cM, movBase &Movie_Object, 
-										   Debugging &debug, Write_Field &jump_field, float X, float Y, bool &Mouse_has_Clicked,
+void Context_Handler::Show_Object_Selector(ContextMenu &cM, movBase &Movie_Object, Debugging &debug, 
+										   Write_Field &jump_field, float X, float Y, bool &Mouse_has_Clicked,
 										   sfe::Movie &Movie_One, bool &Menu_is_Shown, Events &ev) {
- cM.showSelector() ? Menu_Object_Events(cM, Movie_Object, debug, jump_field, X, Y, Mouse_has_Clicked, Movie_One, Menu_is_Shown, ev) : 0;
+ Priv_cM = &cM;
+ Priv_Movie_Object = &Movie_Object;
+ Priv_debug = &debug;
+ Priv_jump_field = &jump_field;
+ Priv_Movie_One = &Movie_One;
+ Priv_ev = &ev;
+ cM.showSelector() ? Menu_Object_Events(X, Y, Mouse_has_Clicked, Menu_is_Shown) : 0;
 }
 
-void Context_Handler::Menu_Object_Events(ContextMenu &cM, movBase &Movie_Object, Debugging &debug, 
-										 Write_Field &jump_field,float X, float Y, 
-										 bool &Mouse_has_Clicked, sfe::Movie &Movie_One, 
-										 bool &Menu_is_Shown, Events &ev) {
-  if (Actions::Hover(cM.objects[cM.GetIndex("About")].textRect) && Actions::Click() && !Mouse_has_Clicked) {
+void Context_Handler::Menu_Object_Events(float X, float Y, bool &Mouse_has_Clicked, bool &Menu_is_Shown) {
+  if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("About")].textRect) && Actions::Click() && !Mouse_has_Clicked) {
    int msg = MessageBox(NULL, L"VGA-Player ALPHA v1.1\nmade by Teodor", L"About VGA-Player", MB_OK);
    Mouse_has_Clicked = true;
-  } else if (Actions::Hover(cM.objects[cM.GetIndex("Return")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   Menu_Handler::Return_To_Menu(Movie_Object);
+  } else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Return")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Menu_Handler::Return_To_Menu(*Priv_Movie_Object);
    Mouse_has_Clicked = true;
-  } else if (Actions::Hover(cM.objects[cM.GetIndex("Replay")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   Menu_Handler::Replay_Movies(Movie_One, Movie_Object);
+  } else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Replay")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Menu_Handler::Replay_Movies(*Priv_Movie_One, *Priv_Movie_Object);
    Mouse_has_Clicked = true;
-  } else if (Actions::Hover(cM.objects[cM.GetIndex("DEBUG")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   debug.setPosition(sf::Vector2f(X, Y));
-   debug.writing = true;
-   Mouse_has_Clicked = true;
-  }
-  else if (Actions::Hover(cM.objects[cM.GetIndex("Jump to")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   jump_field.setPosition(X, Y);
-   jump_field.is_Writing = true;
+  } else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("DEBUG")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Priv_debug->setPosition(sf::Vector2f(X, Y));
+   Priv_debug->writing = true;
    Mouse_has_Clicked = true;
   }
-  else if (Actions::Hover(cM.objects[cM.GetIndex("Play")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   Movie_Object.play();
+  else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Jump to")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Priv_jump_field->setPosition(X, Y);
+   Priv_jump_field->is_Writing = true;
+   Mouse_has_Clicked = true;
   }
-  else if (Actions::Hover(cM.objects[cM.GetIndex("Pause")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   Movie_Object.pause();
+  else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Play")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Priv_Movie_Object->play();
   }
-  else if (Actions::Hover(cM.objects[cM.GetIndex("Stop")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   Movie_Object.stop();
-   Movie_Object.play();
+  else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Pause")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Priv_Movie_Object->pause();
   }
-  else if (Actions::Hover(cM.objects[cM.GetIndex("Fullscreen")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+  else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Stop")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Priv_Movie_Object->stop();
+   Priv_Movie_Object->play();
+  }
+  else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Fullscreen")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
    if (Shared_bool::isFullscreen)
-	ev.exitFullscreen(Shared_sf::window);
+	Priv_ev->exitFullscreen(Shared_sf::window);
    else
-   ev.enterFullscreen(Shared_sf::window);
+	Priv_ev->enterFullscreen(Shared_sf::window);
   }
-  else if (Actions::Hover(cM.objects[cM.GetIndex("Popout Second Movie")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
-   ev.Popout_Second_Window();
+  else if (Actions::Hover(Priv_cM->objects[Priv_cM->GetIndex("Popout Second Movie")].textRect) && Actions::DownClick() && !Mouse_has_Clicked) {
+   Priv_ev->Popout_Second_Window();
   }
  }

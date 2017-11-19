@@ -14,7 +14,6 @@ Debugging::Debugging(sf::RenderWindow &w, sf::Mouse &m, sf::Event &ev, sf::Font 
  bg.setOutlineThickness(5.f);
 }
 
-
 void Debugging::Add_Debug_Variables(Debug_Variable &dv) {
  debug_Vars.push_back(dv);
 }

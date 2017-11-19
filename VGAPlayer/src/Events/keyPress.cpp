@@ -15,6 +15,7 @@ using namespace std;
 
 keyPress::keyPress(Events* event, movBase** mov, Debugging *Debug_Object) : ev(event), movie(mov), debug(Debug_Object){}
 
+
 void keyPress::press(sf::Event event) {
 
  switch (event.key.code) {

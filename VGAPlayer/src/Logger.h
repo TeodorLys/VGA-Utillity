@@ -12,7 +12,7 @@ public:
 
 private:
  CONSOLE_SCREEN_BUFFER_INFO csbi;
- HANDLE h_Std_In  = GetStdHandle(STD_INPUT_HANDLE);
+ HANDLE h_Std_In;
  HANDLE h_Std_Out = GetStdHandle(STD_OUTPUT_HANDLE);
  int Logger_Level = LOG_INFO_LEVEL;
  std::string buff;
@@ -30,6 +30,13 @@ public:
  }
 
  Logger();
+
+ void setup() {
+  h_Std_In = GetStdHandle(STD_INPUT_HANDLE);
+  h_Std_Out = GetStdHandle(STD_OUTPUT_HANDLE);
+  GetConsoleScreenBufferInfo(h_Std_Out, &csbi);
+ }
+
  void Set_Level(int level);
  void Log_Info(std::string, ...);
  void Log_Warning(std::string, ...);

@@ -5,6 +5,12 @@ using namespace std;
 Switch::Switch(bool &f, sf::Mouse &m, sf::RenderWindow &w) : focus(&f), mouse(&m), window(&w){
 }
 
+Switch::~Switch() {
+ delete focus;
+ delete mouse;
+ delete window;
+}
+
 void Switch::setBase() {
 
 	base.setSize(sf::Vector2f(10, 6));

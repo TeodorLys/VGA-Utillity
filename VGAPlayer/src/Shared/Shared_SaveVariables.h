@@ -16,4 +16,5 @@ namespace Shared_Save {
  extern SAString     mov2Path;
  extern SABool       One_Switch_On;
  extern SABool       maximized_On_Exit;
+ extern SABool       Start_Logging;
 };

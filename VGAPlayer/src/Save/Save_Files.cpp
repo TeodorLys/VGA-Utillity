@@ -34,9 +34,13 @@ void Save_Files::Get_Saved_Files(Audio* _audio, InitialSetup *initial) {
    _audio->second_Mov_Vol = static_cast<float>(Shared_Save::volume2.getV(0));  
    Shared_Var::w = static_cast<float>(Shared_Save::window_Width.getV(0));
    Shared_Var::h = static_cast<float>(Shared_Save::window_Height.getV(0));
+
    print.Log_Info("Loaded Switch %b", Shared_Save::One_Switch_On.getV(false));
+   
    Shared_Mod::oneMovie->switchON = Shared_Save::One_Switch_On.getV(false);
    Shared_bool::maximized_On_Exit_Program = Shared_Save::maximized_On_Exit.getV(false);
+   Shared_bool::Start_Logging = Shared_Save::Start_Logging.getV(false);
+
 
    Logger::log().Log_Info("First Movie: %i Second Movie: %i", _audio->first_Mov_Vol, static_cast<int>(_audio->second_Mov_Vol));
 
@@ -170,6 +174,7 @@ void Save_Files::Variables_Settings_to_Save() {
  Shared_Save::settings.saveVariable(Shared_Save::window_Height, Shared_Str::setting);
  Shared_Save::settings.saveVariable(Shared_Save::One_Switch_On, Shared_Str::setting);
  Shared_Save::settings.saveVariable(Shared_Save::maximized_On_Exit, Shared_Str::setting);
+ Shared_Save::settings.saveVariable(Shared_Save::Start_Logging, Shared_Str::setting);
 }
 
 
@@ -181,6 +186,7 @@ void Save_Files::Variables_Settings_to_Load() {
  Shared_Save::settings.Load(Shared_Save::window_Height);
  Shared_Save::settings.Load(Shared_Save::One_Switch_On);
  Shared_Save::settings.Load(Shared_Save::maximized_On_Exit);
+ Shared_Save::settings.Load(Shared_Save::Start_Logging);
 }
 
 

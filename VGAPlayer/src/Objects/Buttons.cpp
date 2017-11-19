@@ -8,6 +8,10 @@ Buttons::Buttons(sf::RenderWindow *w, sf::Mouse *m, sf::Font *f, bool *fo) :
 	focus(fo)
 {}
 
+Buttons::~Buttons() {
+ delete focus;
+}
+
 //Sets the initial settings for the text inside the button
 void Buttons::setText(string str) {
 	//All of this is sf::Text

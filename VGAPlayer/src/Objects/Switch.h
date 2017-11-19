@@ -13,6 +13,7 @@ private:
 	//Actions *action;
 public:
 	Switch(bool &f, sf::Mouse &m, sf::RenderWindow &w/*, Actions &a*/);
+	~Switch();
 	bool switchON = true;
 	void draw();
 	void setBase();

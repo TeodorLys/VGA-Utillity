@@ -21,10 +21,7 @@ namespace Shared_Mod {
  extern textButton *about;
  extern textButton *mainMovText;
 
- /*ContextMenu *basic;
- ContextMenu *mainMovie;*/
  extern ContextMenu allCM[2];
- //extern std::vector<ContextMenu> *allCM;
 
  #define basic allCM[0]
  #define mainMovie allCM[1]

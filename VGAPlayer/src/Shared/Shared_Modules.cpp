@@ -20,11 +20,5 @@ namespace Shared_Mod {
  textButton *about;
  textButton *mainMovText;
 
- //ContextMenu *basic;
- //ContextMenu *mainMovie;
-
- ContextMenu allCM[2];
- //std::vector<ContextMenu> *allCM = new std::vector<ContextMenu>;
-
  Spacer *spacers;
 };

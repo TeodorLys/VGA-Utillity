@@ -89,7 +89,6 @@ void Write_Field::setOpacity(int AlphaColor) {
 
 void Write_Field::value_Field(sf::Event *event) {
  if (event->type == sf::Event::TextEntered) {
-  //print.Log_Info("Key: %i", static_cast<int>(Shared_sf::event.text.unicode));
   switch (event->text.unicode) {
   case 8:
    if (field_Value.size() > 0)
@@ -206,8 +205,9 @@ void Write_Field::Letter_Time_Enter() {
   print.Log_Warning("Hour: " + buff);
  }
  else if (field_Value.find("s") != string::npos) {
-  entered = Actions::stoint(buff) + 0.01f;
-  print.Log_Warning("Hour: %s", buff);
+  entered = static_cast<float>(Actions::stoint(buff));
+  entered += 0.01f;
+  print.Log_Warning("Seconds: %s", buff.c_str());
  }
 
  print.Log_Info("Entered:   %f", entered);

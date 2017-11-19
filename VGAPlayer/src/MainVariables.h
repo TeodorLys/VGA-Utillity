@@ -1,7 +1,6 @@
 #pragma once
 #include "Events\Events.h"
 #include "InitialSetup.h"
-#include "fanArt.h"
 #include "Events\Resized.h"
 #include "Events\keyPress.h"
 #include "Events\mouseEvent.h"

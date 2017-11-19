@@ -10,6 +10,7 @@ using namespace std;
 mouseEvent::mouseEvent(Events* e, Audio *Audio_Object) :
 					   ev(e), _audio(Audio_Object){}
 
+
 void mouseEvent::Initialize_Isolated_Movie(sfe::Movie &Movie_One, size_t &Hour,
 								 size_t &Minute, size_t &Second){
  ev->startMovies();

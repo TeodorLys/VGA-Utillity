@@ -15,6 +15,7 @@ namespace Shared_bool {
  extern bool movie_Status_Changed;
  extern bool set_Default_Movie;
  extern bool second_Movie_Popout;
+ extern bool Start_Logging;
 
  //Temporary!!
  extern bool get;

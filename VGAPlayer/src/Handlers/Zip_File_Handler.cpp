@@ -5,8 +5,7 @@
 
 using namespace std;
 
-Zip_File_Handler::Zip_File_Handler(){
-}
+Zip_File_Handler::Zip_File_Handler(){}
 
 Zip_File_Handler::~Zip_File_Handler() {
  delete[] cn.content;
