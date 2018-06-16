@@ -262,7 +262,7 @@ int main(int argc, char* argv[]) {
 	if (argc > 1)   //the first value in argc is the executable path -- usually
 		Parse_Main_Arguments(argv);
 	else if (Shared_bool::set_Default_Movie) {
-		char *temp[2] = { "", "G:\\Backup_Of_Backup\\All_On_The_drive_for_stuff\\Backup_Of_the_Old_External_HDD\\Downloaded Movies\\A Christmas Carol\\A Christmas Carol.mp4" };
+		char *temp[2] = { "", "" };
 		Parse_Main_Arguments(temp);
 	}
 
