@@ -1,5 +1,6 @@
 #include <string>
 #include <sfeMovie\Movie.hpp>
+#include <SFML\Graphics\RenderWindow.hpp>
 #include "Events\Actions.h"
 #include "Write_Field.h"
 #include "Logger.h"
@@ -88,106 +89,106 @@ void Write_Field::setOpacity(int AlphaColor) {
 
 
 void Write_Field::value_Field(sf::Event *event) {
- if (event->type == sf::Event::TextEntered) {
-  switch (event->text.unicode) {
-  case 8:
-   if (field_Value.size() > 0)
-	field_Value.pop_back();
-   break;
+	if (event->type == sf::Event::TextEntered) {
+		switch (event->text.unicode) {
+		case 8:
+			if (field_Value.size() > 0)
+				field_Value.pop_back();
+			break;
 
-  case 13:
-   if (field_Value.size() > 0) {
-	is_Writing = false;
-	initial_Setting = false;
-	if (field_Value.size() == 8 && !Letter_Timer)
-	 Regular_Time_Enter();
-	else if (field_Value.size() == 8 && Letter_Timer)
-	 Letter_Time_Enter();
-	else
-	 print.Log_Error("Values was entered incorrectly");
-   }
-   break;
+		case 13:
+			if (field_Value.size() > 0) {
+				is_Writing = false;
+				initial_Setting = false;
+				if (field_Value.size() == 8 && !Letter_Timer)
+					Regular_Time_Enter();
+				else if (field_Value.size() == 8 && Letter_Timer)
+					Letter_Time_Enter();
+				else
+					print.Log_Error("Values was entered incorrectly");
+			}
+			break;
 
-  case 43:
-   if (!Addition_Timer) {
-	Addition_Timer = true;
-	Subtraction_Timer = false;
-	field_To_Write__OutColor = sf::Color(100, 255, 100, field_To_Write__OutColor.a);
-	field_To_Write.setOutlineColor(field_To_Write__OutColor);
-   }
-   else {
-	Addition_Timer = false;
-	Subtraction_Timer = false;
-	field_To_Write__OutColor = sf::Color(100, 100, 100, field_To_Write__OutColor.a);
-	field_To_Write.setOutlineColor(field_To_Write__OutColor);
-   }
-   break;
+		case 43:
+			if (!Addition_Timer) {
+				Addition_Timer = true;
+				Subtraction_Timer = false;
+				field_To_Write__OutColor = sf::Color(100, 255, 100, field_To_Write__OutColor.a);
+				field_To_Write.setOutlineColor(field_To_Write__OutColor);
+			}
+			else {
+				Addition_Timer = false;
+				Subtraction_Timer = false;
+				field_To_Write__OutColor = sf::Color(100, 100, 100, field_To_Write__OutColor.a);
+				field_To_Write.setOutlineColor(field_To_Write__OutColor);
+			}
+			break;
 
-  case 45:
-   if (!Subtraction_Timer) {
-	Addition_Timer = false;
-	Subtraction_Timer = true;
-	field_To_Write__OutColor = sf::Color(255, 100, 100, field_To_Write__OutColor.a);
-	field_To_Write.setOutlineColor(field_To_Write__OutColor);
-   }
-   else {
-	Addition_Timer = false;
-	Subtraction_Timer = false;
-	field_To_Write__OutColor = sf::Color(100, 100, 100, field_To_Write__OutColor.a);
-	field_To_Write.setOutlineColor(field_To_Write__OutColor);
-   }
-   break;
+		case 45:
+			if (!Subtraction_Timer) {
+				Addition_Timer = false;
+				Subtraction_Timer = true;
+				field_To_Write__OutColor = sf::Color(255, 100, 100, field_To_Write__OutColor.a);
+				field_To_Write.setOutlineColor(field_To_Write__OutColor);
+			}
+			else {
+				Addition_Timer = false;
+				Subtraction_Timer = false;
+				field_To_Write__OutColor = sf::Color(100, 100, 100, field_To_Write__OutColor.a);
+				field_To_Write.setOutlineColor(field_To_Write__OutColor);
+			}
+			break;
 
-  case 109:
-   Letter_Timer = true;
-   if(field_Value.size() == 0){
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-   }
-   field_Value.push_back('m');
-   break;
+		case 109:
+			Letter_Timer = true;
+			if (field_Value.size() == 0) {
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+			}
+			field_Value.push_back('m');
+			break;
 
-  case 104:
-   Letter_Timer = true;
-   if (field_Value.size() == 0) {
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-   }
-   field_Value.push_back('h');
-   break;
+		case 104:
+			Letter_Timer = true;
+			if (field_Value.size() == 0) {
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+			}
+			field_Value.push_back('h');
+			break;
 
-  case 115:
-   Letter_Timer = true;
-   if (field_Value.size() == 0) {
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-	field_Value.push_back(' ');
-   }
-   field_Value.push_back('s');
-   break;
+		case 115:
+			Letter_Timer = true;
+			if (field_Value.size() == 0) {
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+				field_Value.push_back(' ');
+			}
+			field_Value.push_back('s');
+			break;
 
-  default:
-   if (field_Value.size() < 8)
-	limitList.find((char)event->text.unicode) != string::npos ? field_Value.push_back((char)event->text.unicode) : 0;
+		default:
+			if (field_Value.size() < 8)
+				limitList.find((char)event->text.unicode) != string::npos ? field_Value.push_back((char)event->text.unicode) : 0;
 
-   if (field_Value.size() % 3 == 2 && field_Value.size() < 8 && !Letter_Timer) {
-	field_Value.push_back(':');
-   }
-   break;
-  } // Switch end...
-  if (field_Value.find("m") == string::npos && field_Value.find("s") == string::npos && field_Value.find("h") == string::npos && Letter_Timer) {
-   Letter_Timer = false;
-  }
-  writing_Object.setString(field_Value);
- }
+			if (field_Value.size() % 3 == 2 && field_Value.size() < 8 && !Letter_Timer) {
+				field_Value.push_back(':');
+			}
+			break;
+		} // Switch end...
+		if (field_Value.find("m") == string::npos && field_Value.find("s") == string::npos && field_Value.find("h") == string::npos && Letter_Timer) {
+			Letter_Timer = false;
+		}
+		writing_Object.setString(field_Value);
+	}
 }
 
 void Write_Field::Letter_Time_Enter() {

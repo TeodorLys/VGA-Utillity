@@ -34,7 +34,6 @@ sf::Uint8 Animation::Lerp_Value(sf::Uint8 start_Point, sf::Uint8 end_Point, cons
   else
    start_Point -= (speed + 1);
 
-  //print.Log_Info("LERP_VALUE: startpoint = %i", static_cast<int>(start_Point));
   return start_Point;
  }
  else {

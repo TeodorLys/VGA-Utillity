@@ -28,7 +28,7 @@ float mx;
 float my;
 bool beforeStart = false;
 bool border_Infinity_Stopper = false;
-bool moving_Second_Movie;
+bool moving_Second_Movie = false;
 bool file_Open_All_Success = false;
 
 struct objects {

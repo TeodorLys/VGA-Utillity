@@ -3,12 +3,14 @@
 #include <SFML\Graphics\RenderWindow.hpp>
 #include <SFML\Graphics\RectangleShape.hpp>
 #include <SFML\Graphics\Text.hpp>
+#include <mutex>
 
 class movieDuration;
 class InitialSetup;
 
 class movBase {
 public:
+	std::mutex m;
  virtual void stop() {}
  virtual void play() {}
  virtual void pause() {}

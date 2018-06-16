@@ -1,11 +1,11 @@
 #pragma once
+
 #include <SFML\Graphics\ConvexShape.hpp>
 #include <SFML\Graphics\CircleShape.hpp>
 #include <SFML\Graphics\RectangleShape.hpp>
 #include <SFML\Graphics\Texture.hpp>
 
 class Play_Pause_Icon {
-
 private:
  sf::ConvexShape playShape;
  sf::RectangleShape PauseShape[2];

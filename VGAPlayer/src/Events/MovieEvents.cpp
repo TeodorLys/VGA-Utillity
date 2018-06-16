@@ -11,6 +11,7 @@
 #include "Shared\Shared_Variables.h"
 #include "Shared\Shared_Modules.h"
 
+
 using namespace std;
 
 void multiMovies::stop() {
@@ -65,8 +66,10 @@ void multiMovies::drawMovieInv(sfe::Movie &mov1, sfe::Movie &mov2) {
 }
 
 void multiMovies::updateMovies(sfe::Movie &mov1, sfe::Movie &mov2) {
+	m.lock();
  Shared_sfe::movie->update();
  Shared_sfe::movie2->update();
+	m.unlock();
 }
 
 void multiMovies::movieTimers(movieDuration &Duration) {

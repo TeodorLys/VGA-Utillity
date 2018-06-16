@@ -132,7 +132,9 @@ void Debugging::valueField() {
    }
   }
   else {
-   limitList.find((char)event->text.unicode) != string::npos ? debug_Vars[index].written_Value.push_back((char)event->text.unicode) : 0;
+			if (limitList.find((char)event->text.unicode) != string::npos && debug_Vars[index].written_Value.size() <= 10) {
+				debug_Vars[index].written_Value.push_back((char)event->text.unicode);
+			}
   }
   write->setString(debug_Vars[index].written_Value);
   if(write->getString().getSize() > 0 || event->key.code == 8 && write->getString().getSize() > 1)

@@ -1,5 +1,11 @@
 #include "Shared_sfml_Objects.h"
 
+#include <SFML\Window\Event.hpp>
+#include <SFML\Graphics\RenderWindow.hpp>
+#include <SFML\Graphics\Font.hpp>
+#include <SFML\Graphics\Text.hpp>
+#include <SFML\Graphics\RectangleShape.hpp>
+
 namespace Shared_sf {
  sf::Event event;
  sf::Event second_Event;

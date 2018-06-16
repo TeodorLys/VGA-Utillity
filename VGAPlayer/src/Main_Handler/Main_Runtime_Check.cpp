@@ -1,6 +1,7 @@
 #include <sfeMovie\Movie.hpp>
 #include <mutex>
 #include <condition_variable>
+#include <SFML\Window\Event.hpp>
 #include "Main_Runtime_Check.h"
 #include "Events\Actions.h"
 #include "Objects\Switch.h"
@@ -43,56 +44,56 @@ void Main_Runtime_Check::Thread_Pause(std::mutex *m, bool *pause) {
 
 
 //Runtime/Constant Checking, if something has changed or has been clicked
-void Main_Runtime_Check::When_Movie_is_Playing(movBase *movie, movieDuration &md, std::condition_variable *cv, std::mutex *m, bool *pause) {
- if (Shared_bool::movie_is_Playing) {
-  if (Shared_Mod::oneMovie->switchON && !Shared_bool::second_Movie_Popout) {
-   if (Actions::Movie_Two_Hover(Shared_sf::mouse, Shared_sf::window, *Shared_sfe::movie2) && Actions::DownClick() && !moving_Second_Movie && !Shared_bool::mouseClick) {
-	//As an offset for the mouse position relative to the second movie window
-	initx = Shared_sf::mouse.getPosition(Shared_sf::window).x;
-	inity = Shared_sf::mouse.getPosition(Shared_sf::window).y;
-	mx = static_cast<int>(Shared_sfe::movie2->getPosition().x);
-	my = static_cast<int>(Shared_sfe::movie2->getPosition().y);
+void Main_Runtime_Check::When_Movie_is_Playing(movBase *movie, movieDuration &md, std::condition_variable *cv, std::mutex *m, bool *pause, bool *moving_Second_window) {
+	if (Shared_bool::movie_is_Playing) {
+		if (Shared_Mod::oneMovie->switchON && !Shared_bool::second_Movie_Popout) {
+			if (Actions::Movie_Two_Hover(Shared_sf::mouse, Shared_sf::window, *Shared_sfe::movie2) && Actions::DownClick() && !moving_Second_Movie && !Shared_bool::mouseClick) {
+				//As an offset for the mouse position relative to the second movie window
+				initx = Shared_sf::mouse.getPosition(Shared_sf::window).x;
+				inity = Shared_sf::mouse.getPosition(Shared_sf::window).y;
+				mx = static_cast<int>(Shared_sfe::movie2->getPosition().x);
+				my = static_cast<int>(Shared_sfe::movie2->getPosition().y);
 
-	moving_Second_Movie = true;  //Says to other statements that the user is moving the second window
-   }
-   if (moving_Second_Movie) {
-	Shared_sfe::movie2->setPosition(sf::Vector2f((float)Shared_sf::mouse.getPosition(Shared_sf::window).x + (mx - initx),
-	                                             (float)Shared_sf::mouse.getPosition(Shared_sf::window).y + (my - inity)));
-   }
-  }
+				*moving_Second_window = true;  //Says to other statements that the user is moving the second window
+			}
+			if (*moving_Second_window) {
+				Shared_sfe::movie2->setPosition(sf::Vector2f((float)Shared_sf::mouse.getPosition(Shared_sf::window).x + (mx - initx),
+					(float)Shared_sf::mouse.getPosition(Shared_sf::window).y + (my - inity)));
+			}
+		}
 
-  if (Shared_sf::mouse.getPosition(Shared_sf::window).x >= 0 && Shared_sf::mouse.getPosition(Shared_sf::window).y <= 0
-   || Shared_sf::mouse.getPosition(Shared_sf::second_Window).x >= 0 &&
-   Shared_sf::mouse.getPosition(Shared_sf::second_Window).y <= 0 && Shared_bool::second_Movie_Popout) {
+		if (Shared_sf::mouse.getPosition(Shared_sf::window).x >= 0 && Shared_sf::mouse.getPosition(Shared_sf::window).y <= 0
+			|| Shared_sf::mouse.getPosition(Shared_sf::second_Window).x >= 0 &&
+			Shared_sf::mouse.getPosition(Shared_sf::second_Window).y <= 0 && Shared_bool::second_Movie_Popout) {
 
-   if (Actions::DownClick() && !border_Infinity_Stopper && !Shared_bool::mouseClick) {
-	//Pauses the thread, so the CPU dont get angry at me
-	Shared_sf::window.setActive(false);
-	if (Shared_bool::second_Movie_Popout)
-	 Shared_sf::second_Window.setActive(false);
+			if (Actions::DownClick() && !border_Infinity_Stopper && !Shared_bool::mouseClick) {
+				//Pauses the thread, so the CPU dont get angry at me
+				Shared_sf::window.setActive(false);
+				if (Shared_bool::second_Movie_Popout)
+					Shared_sf::second_Window.setActive(false);
 
-	Thread_Start(cv, m, pause);
+				Thread_Start(cv, m, pause);
 
-	border = true;   //If the mouse IS over the window border
-	border_Infinity_Stopper = true;   //So it only starts the thread once.
-   }
-  }
-  else {
-   if (border_Infinity_Stopper) {
-	Shared_sf::window.setActive(false);
-	if (Shared_bool::second_Movie_Popout)
-	 Shared_sf::second_Window.setActive(false);
+				border = true;   //If the mouse IS over the window border
+				border_Infinity_Stopper = true;   //So it only starts the thread once.
+			}
+		}
+		else {
+			if (border_Infinity_Stopper) {
+				Shared_sf::window.setActive(false);
+				if (Shared_bool::second_Movie_Popout)
+					Shared_sf::second_Window.setActive(false);
 
-	Thread_Pause(m, pause);
-	border = false;   //If the mouse ISNT over the window border
-	border_Infinity_Stopper = false;   //So it only pauses the thread once.
-   }
-  }
-  movie->movieTimers(md);  //Update the movie timers
- }
- else if (!Shared_bool::movie_is_Playing && beforeStart) {
-  beforeStart = false;
- }
+				Thread_Pause(m, pause);
+				border = false;   //If the mouse ISNT over the window border
+				border_Infinity_Stopper = false;   //So it only pauses the thread once.
+			}
+		}
+		movie->movieTimers(md);  //Update the movie timers
+	}
+	else if (!Shared_bool::movie_is_Playing && beforeStart) {
+		beforeStart = false;
+	}
 }/*--(When_Movie_Is_Playing END)--*/
 
 

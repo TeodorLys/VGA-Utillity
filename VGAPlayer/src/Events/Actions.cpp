@@ -1,9 +1,10 @@
+#include <SFML\Window\Event.hpp>
+#include <sfeMovie\Movie.hpp>
+#include <iostream>
+#include "Shared\Shared_sfml_Objects.h"
 #include "InitialSetup.h"
 #include "Actions.h"
-#include "Shared\Shared_sfml_Objects.h"
-#include <sfeMovie\Movie.hpp>
 #include "Objects\Switch.h"
-#include <iostream>
 #include "Shared\Shared_sfe_Movie.h"
 
 using namespace std;

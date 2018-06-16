@@ -52,6 +52,9 @@ inline void Check_FILM_Button(InitialSetup &initial) {
  const float var = 14;
  if (Shared_Mod::oneMovie->switchON) {
   Shared_Mod::film->setTextColor(sf::Color(Animation::Lerp_Color(Shared_Mod::film->title.getFillColor(), sf::Color(255,125,0), var, var - 8, var, "TextColor")));
+		if (Shared_Mod::film->Get_Loaded())
+			Shared_Mod::film->outLine = sf::Color(Animation::Lerp_Color(Shared_Mod::film->outLine, sf::Color(20, 255, 20), var, var - 8, var, "Outline"));
+		else
   Shared_Mod::film->outLine = sf::Color(Animation::Lerp_Color(Shared_Mod::film->outLine, sf::Color(255,125,0), var, var - 8, var, "Outline"));
   Shared_Mod::film->baseColor = sf::Color(Animation::Lerp_Color(Shared_Mod::film->baseColor, sf::Color(0,0,0), var, "BaseColor"));
   Shared_Mod::film->setButtonColor(5.5f);
@@ -62,7 +65,6 @@ inline void Check_FILM_Button(InitialSetup &initial) {
    initial.LoadMovie(2, &Shared_sfe::movie2);
    Shared_bool::doonce = true;
   }
-
  }
  else {
   Shared_Mod::film->baseColor = sf::Color(Animation::Lerp_Color(Shared_Mod::film->baseColor, sf::Color(50, 50, 50), var, "BaseColor"));

@@ -1,10 +1,18 @@
 #pragma once
 
-#include <SFML\Window\Event.hpp>
-#include <SFML\Graphics\RenderWindow.hpp>
-#include <SFML\Graphics\Font.hpp>
-#include <SFML\Graphics\Text.hpp>
-#include <SFML\Graphics\RectangleShape.hpp>
+
+
+namespace sf {
+	class Event;
+	class Time;
+	class Font;
+	class Text;
+	class Texture;
+	class RenderWindow;
+	class Mouse;
+	class Color;
+	class RectangleShape;
+}
 
 namespace Shared_sf {
  extern sf::Event event;

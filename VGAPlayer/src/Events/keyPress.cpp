@@ -70,7 +70,7 @@ void keyPress::press(sf::Event event) {
    (**movie).pause();
    Shared_sfe::movie->setPlayingOffset(sf::seconds(Shared_Var::inc));
 
-   //Moves forward in the smaller movie with 10 seconds
+   //Moves forward in the smaller with 10 seconds
    Shared_Mod::oneMovie->switchON ?
 	Shared_sfe::movie2->setPlayingOffset(sf::seconds(Shared_Var::secondInc) - Shared_sf::off) : 0;
 

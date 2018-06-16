@@ -122,7 +122,10 @@ void Add_to_Debugger(std::string s, Debug_Variable &dv, Debugging &d, T &var) {
 void InitialSetup::init_Debug(Debugging &debug) {
  Debug_Variable dv;
  
- Add_to_Debugger<float>("NOT IN USE!!!aa", dv, debug, Shared_Var::getf);
+ Add_to_Debugger<float>("NOT IN USE!!!", dv, debug, Shared_Var::getf);
+	Add_to_Debugger<float>("NOT IN USE!!!", dv, debug, Shared_Var::getf);
+	Add_to_Debugger<float>("NOT IN USE!!!", dv, debug, Shared_Var::getf);
+	Add_to_Debugger<float>("NOT IN USE!!!", dv, debug, Shared_Var::getf);
 
  debug.Setup();
 }
@@ -265,64 +268,70 @@ bool InitialSetup::OpenFile(int n) {
 /// \Loads the movies into memory
 ///////////////////////////////////////////////////////////////////////////////////////////
 bool InitialSetup::LoadMovie(int n, sfe::Movie **Movie_to_Load) {
- if (!OpenFile(n)) {
-  return false;
- }
- //So it doesnt try to load a file that has not been selected, i.e "NONE" is defalt (which is not a path...)
- if (ffs != "NONE" || mov != "NONE") {
-  string h;
-  string movie_Path;
+	if (!OpenFile(n)) {
+		return false;
+	}
+	//So it doesnt try to load a file that has not been selected, i.e "NONE" is defalt (which is not a path...)
+	if (ffs != "NONE" || mov != "NONE") {
+		string h;
+		string movie_Path;
 
-  if (n == 1)
-   movie_Path = ffs;
-  else
-   movie_Path = mov;
-  
-  delete *Movie_to_Load;
-  *Movie_to_Load = new sfe::Movie;
-  if (!(**Movie_to_Load).openFromFile(movie_Path)) {
-   print.Log_Warning("%s could not be opened", movie_Path.c_str());
-   h = "Could not open\n" + movie_Path;
-   msg = MessageBox(NULL, (LPCWSTR)h.c_str(), L"PATH WAS NOT FOUND", MB_OKCANCEL);
-   if (msg == IDOK || msg == IDCANCEL)
-	goto Failed;
-  }
-  else {
-   print.Log_Success("Successfully loaded %s", movie_Path.c_str());
-   print.Log_Info("Audio Channels: %i", (**Movie_to_Load).getChannelCount());
-   print.Log_Info("Duration: %i", (int)(**Movie_to_Load).getDuration().asSeconds());
-   print.Log_Info("Framerate: %i", (int)(**Movie_to_Load).getFramerate());
-   print.Log_Info("Sample rate: %ihz", (**Movie_to_Load).getSampleRate());
+		if (n == 1)
+			movie_Path = ffs;
+		else
+			movie_Path = mov;
 
-   if (n == 1)
-	(**Movie_to_Load).setVolume(static_cast<float>(Shared_Var::mov1Vol));
-   else
-	(**Movie_to_Load).setVolume(static_cast<float>(Shared_Var::mov2Vol));
+		delete *Movie_to_Load;
+		*Movie_to_Load = new sfe::Movie;
+		if (!(**Movie_to_Load).openFromFile(movie_Path)) {
+			print.Log_Warning("%s could not be opened", movie_Path.c_str());
+			h = "Could not open\n" + movie_Path;
+			msg = MessageBox(NULL, (LPCWSTR)h.c_str(), L"PATH WAS NOT FOUND", MB_OKCANCEL);
+			if (msg == IDOK || msg == IDCANCEL)
+				goto Failed;
+		}
+		else {
+			print.Log_Success("Successfully loaded %s", movie_Path.c_str());
+			print.Log_Info("Audio Channels: %i", (**Movie_to_Load).getChannelCount());
+			print.Log_Info("Duration: %i", (int)(**Movie_to_Load).getDuration().asSeconds());
+			print.Log_Info("Framerate: %i", (int)(**Movie_to_Load).getFramerate());
+			print.Log_Info("Sample rate: %ihz", (**Movie_to_Load).getSampleRate());
 
-   print.Log_Info("Volume: %i", (int)(**Movie_to_Load).getVolume());
+			if (n == 1) {
+				(**Movie_to_Load).setVolume(static_cast<float>(Shared_Var::mov1Vol));
+				Shared_Mod::ffstv->outLine = sf::Color(20, 255, 20);
+				Shared_Mod::ffstv->setButtonColor(5.5f);
+				Shared_Mod::ffstv->Set_Loaded(true);
+			}
+			else {
+				(**Movie_to_Load).setVolume(static_cast<float>(Shared_Var::mov2Vol));
+				Shared_Mod::film->outLine = sf::Color(20, 255, 20);
+				Shared_Mod::film->setButtonColor(5.5f);
+				Shared_Mod::film->Set_Loaded(true);
+			}
 
-   Shared_Mod::ffstv->outLine = sf::Color(20, 255, 20);
-   Shared_Mod::ffstv->setButtonColor(5.5f);
-   if (n == 2) {
-	movie_Two_is_Greater = Check_Movie_Limits();
-	goto Success;
-   }
-   return true;
-  }
-  Failed:
-  return false;
- }
+			print.Log_Info("Volume: %i", (int)(**Movie_to_Load).getVolume());
 
- Success:
- if (ffs != "NONE" && mov != "NONE") {
-  print.Log_Success("Successfully loaded both movies");
-  combHash = Save_Files::Hash_Movies(allHash, ffs, mov);
-  Save_Files::Check_Movie_Watched(allHash, combHash);
-  return true;
- }
- //Last resort - fail message
- print.Log_Error("Some if statement fell through...");
- return false;
+			if (n == 2) {
+				movie_Two_is_Greater = Check_Movie_Limits();
+				goto Success;
+			}
+			return true;
+		}
+	Failed:
+		return false;
+	}
+
+Success:
+	if (ffs != "NONE" && mov != "NONE") {
+		print.Log_Success("Successfully loaded both movies");
+		combHash = Save_Files::Hash_Movies(allHash, ffs, mov);
+		Save_Files::Check_Movie_Watched(allHash, combHash);
+		return true;
+	}
+	//Last resort - fail message
+	print.Log_Error("Some if statement fell through...");
+	return false;
 }//LoadMovie Function END
 
 

@@ -7,7 +7,7 @@
 class Buttons
 {
 private:
-
+	bool loaded = false;
 	void rectangle();
 	float HeightAdd;
 	float WidthAdd;
@@ -35,6 +35,8 @@ public:
 	void setSize(float h, float w);
 	bool Hover(sf::Color c, float size);
 	void ScreenScaleing(sf::Vector2f pos, float sizeX, float sizeY, float extra);
+	bool Get_Loaded() { return loaded; }
+	void Set_Loaded(bool b) { loaded = b; }
 	sf::Vector2f getPosition();
 	sf::Vector2f getSize();
 	float getNew();
